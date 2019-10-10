@@ -1,11 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use App\Lecturer;
 use Illuminate\Http\Request;
-
 use Auth;
+use App\Lecturer;
 
 class LecturerController extends Controller
 {
@@ -16,7 +14,7 @@ class LecturerController extends Controller
      */
     protected function currentUser()
     {
-        return Auth::guard('api')->user();
+        return Auth::guard('api')->user() ?? Auth::user();
     }
 
     /**
@@ -24,13 +22,19 @@ class LecturerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        if($this->currentUser()){
-            return Lecturer::where('status', 'on');
+        $lecturers = Lecturer::all();
+        if($request->wantsJson()){
+            return $lecturers;
+
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            return view('lecturers.lecturer', compact('lecturers'));
         }
+    }
+
+    public function create(){
+            return view('lecturers.create');
     }
 
     /**
@@ -41,13 +45,14 @@ class LecturerController extends Controller
      */
     public function store(Request $request)
     {
-        if($this->currentUser()){
             Lecturer::create($request->all());
-            return response()->json([
+            if($request->wantsJson()){
+                return response()->json([
                 "info"=>"Lecturer successfully created."
             ], 201);
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            $info = "Lecturer successfully created";
+            return view('lecturers.create',compact('info'));
         }
     }
 
@@ -57,13 +62,17 @@ class LecturerController extends Controller
      * @param  \App\Lecturer $lecturer
      * @return \Illuminate\Http\Response
      */
-    public function show(Lecturer $lecturer)
+    public function show(Request $request, Lecturer $lecturer)
     {
-        if($this->currentUser()){
+        if($request->wantsJson()){
             return $lecturer;
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            return view('lecturers.view', compact('lecturer'));
         }
+    }
+
+    public function edit(Lecturer $lecturer){
+        return view('lecturers.edit',compact('lecturer'));
     }
 
     /**
@@ -75,11 +84,12 @@ class LecturerController extends Controller
      */
     public function update(Request $request, Lecturer $lecturer)
     {
-        if($this->currentUser()){
             $lecturer->update($request->all());
+            if($request->wantsJson()){
             return response()->json(['info' => 'Lecturer successfully updated.'], 200);
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            $info = "Lecturer successfully updated.";
+            return view('lecturers.edit', compact('info'));
         }
     }
 
@@ -89,13 +99,14 @@ class LecturerController extends Controller
      * @param  \App\Lecturer  $lecturer
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Lecturer $lecturer)
+    public function destroy(Request $request, Lecturer $lecturer)
     {
-        if($this->currentUser()){
             $lecturer->delete();
+            if($request->wantsJson()){
             return response()->json(['info' => 'Lecturer  deleted successfully.'], 200);
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            $info = "Lecturer  deleted successfully.";
+            return view('lecturers.lecturer', compact('info'));
         }
     }
 

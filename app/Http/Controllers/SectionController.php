@@ -1,11 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use App\Section;
 use Illuminate\Http\Request;
-
 use Auth;
+use App\Section;
 
 class SectionController extends Controller
 {
@@ -16,7 +14,7 @@ class SectionController extends Controller
      */
     protected function currentUser()
     {
-        return Auth::guard('api')->user();
+        return Auth::guard('api')->user() ?? Auth::user();
     }
 
     /**
@@ -24,13 +22,19 @@ class SectionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        if($this->currentUser()){
-            return Section::where('status', 'on');
+        $sections = Section::all();
+        if($request->wantsJson()){
+            return $sections;
+
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            return view('sections.section', compact('sections'));
         }
+    }
+
+    public function create(){
+        return view('sections.create');
     }
 
     /**
@@ -41,13 +45,14 @@ class SectionController extends Controller
      */
     public function store(Request $request)
     {
-        if($this->currentUser()){
             Section::create($request->all());
-            return response()->json([
+            if($request->wantsJson()){
+                return response()->json([
                 "info"=>"Section successfully created."
             ], 201);
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            $info = "Section successfully created";
+            return view('sections.create',compact('info'));
         }
     }
 
@@ -57,13 +62,17 @@ class SectionController extends Controller
      * @param  \App\Section $section
      * @return \Illuminate\Http\Response
      */
-    public function show(Section $section)
+    public function show(Request $request, Section $section)
     {
-        if($this->currentUser()){
+        if($request->wantsJson()){
             return $section;
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            return view('sections.view', compact('section'));
         }
+    }
+
+    public function edit(Section $section){
+        return view('sections.edit',compact('section'));
     }
 
     /**
@@ -75,11 +84,12 @@ class SectionController extends Controller
      */
     public function update(Request $request, Section $section)
     {
-        if($this->currentUser()){
             $section->update($request->all());
+            if($request->wantsJson()){
             return response()->json(['info' => 'Section successfully updated.'], 200);
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            $info = "Section successfully updated.";
+            return view('sections.edit', compact('info'));
         }
     }
 
@@ -89,13 +99,14 @@ class SectionController extends Controller
      * @param  \App\Section  $section
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Section $section)
+    public function destroy(Request $request, Section $section)
     {
-        if($this->currentUser()){
             $section->delete();
+            if($request->wantsJson()){
             return response()->json(['info' => 'Section  deleted successfully.'], 200);
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            $info = "Section  deleted successfully.";
+            return view('sections.section', compact('info'));
         }
     }
 

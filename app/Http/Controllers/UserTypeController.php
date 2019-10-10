@@ -1,11 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use App\UserType;
 use Illuminate\Http\Request;
-
 use Auth;
+use App\UserType;
 
 class UserTypeController extends Controller
 {
@@ -16,7 +14,7 @@ class UserTypeController extends Controller
      */
     protected function currentUser()
     {
-        return Auth::guard('api')->user();
+        return Auth::guard('api')->user() ?? Auth::user();
     }
 
     /**
@@ -24,13 +22,19 @@ class UserTypeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        if($this->currentUser()){
-            return UserType::where('status', 'on');
+        $user_types = UserType::all();
+        if($request->wantsJson()){
+            return $user_types;
+
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            return view('user_types.user_type', compact('user_types'));
         }
+    }
+
+    public function create(){
+            return view('user_types.create');
     }
 
     /**
@@ -41,13 +45,14 @@ class UserTypeController extends Controller
      */
     public function store(Request $request)
     {
-        if($this->currentUser()){
             UserType::create($request->all());
-            return response()->json([
+            if($request->wantsJson()){
+                return response()->json([
                 "info"=>"User_type successfully created."
             ], 201);
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            $info = "User_type successfully created";
+            return view('user_types.create',compact('info'));
         }
     }
 
@@ -57,13 +62,17 @@ class UserTypeController extends Controller
      * @param  \App\UserType $user_type
      * @return \Illuminate\Http\Response
      */
-    public function show(UserType $user_type)
+    public function show(Request $request, UserType $user_type)
     {
-        if($this->currentUser()){
+        if($request->wantsJson()){
             return $user_type;
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            return view('user_types.view', compact('user_type'));
         }
+    }
+
+    public function edit(UserType $user_type){
+        return view('user_types.edit',compact('user_type'));
     }
 
     /**
@@ -75,11 +84,12 @@ class UserTypeController extends Controller
      */
     public function update(Request $request, UserType $user_type)
     {
-        if($this->currentUser()){
             $user_type->update($request->all());
+            if($request->wantsJson()){
             return response()->json(['info' => 'User_type successfully updated.'], 200);
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            $info = "User_type successfully updated.";
+            return view('user_types.edit', compact('info'));
         }
     }
 
@@ -89,13 +99,14 @@ class UserTypeController extends Controller
      * @param  \App\UserType  $user_type
      * @return \Illuminate\Http\Response
      */
-    public function destroy(UserType $user_type)
+    public function destroy(Request $request, UserType $user_type)
     {
-        if($this->currentUser()){
             $user_type->delete();
+            if($request->wantsJson()){
             return response()->json(['info' => 'User_type  deleted successfully.'], 200);
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            $info = "User_type  deleted successfully.";
+            return view('user_types.user_type', compact('info'));
         }
     }
 

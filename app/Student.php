@@ -11,7 +11,7 @@ class Student extends Model
      * Mass assignable columns
      *
      */
-    protected $fillable = ['user_id','matric_no','first_name','middle_name','last_name','level_id','department_id'];
+    protected $fillable = ['user_id','matric_number','first_name','middle_name','last_name','level_id','department_id'];
 
     /**
      *

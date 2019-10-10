@@ -1,11 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use App\Register;
 use Illuminate\Http\Request;
-
 use Auth;
+use App\Register;
 
 class RegisterController extends Controller
 {
@@ -16,7 +14,7 @@ class RegisterController extends Controller
      */
     protected function currentUser()
     {
-        return Auth::guard('api')->user();
+        return Auth::guard('api')->user() ?? Auth::user();
     }
 
     /**
@@ -24,13 +22,19 @@ class RegisterController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        if($this->currentUser()){
-            return Register::where('status', 'on');
+        $registers = Register::all();
+        if($request->wantsJson()){
+            return $registers;
+
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            return view('registers.register', compact('registers'));
         }
+    }
+
+    public function create(){
+            return view('registers.create');
     }
 
     /**
@@ -41,13 +45,14 @@ class RegisterController extends Controller
      */
     public function store(Request $request)
     {
-        if($this->currentUser()){
             Register::create($request->all());
-            return response()->json([
+            if($request->wantsJson()){
+                return response()->json([
                 "info"=>"Register successfully created."
             ], 201);
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            $info = "Register successfully created";
+            return view('registers.create',compact('info'));
         }
     }
 
@@ -57,13 +62,17 @@ class RegisterController extends Controller
      * @param  \App\Register $register
      * @return \Illuminate\Http\Response
      */
-    public function show(Register $register)
+    public function show(Request $request, Register $register)
     {
-        if($this->currentUser()){
+        if($request->wantsJson()){
             return $register;
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            return view('registers.view', compact('register'));
         }
+    }
+
+    public function edit(Register $register){
+        return view('registers.edit',compact('register'));
     }
 
     /**
@@ -75,11 +84,12 @@ class RegisterController extends Controller
      */
     public function update(Request $request, Register $register)
     {
-        if($this->currentUser()){
             $register->update($request->all());
+            if($request->wantsJson()){
             return response()->json(['info' => 'Register successfully updated.'], 200);
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            $info = "Register successfully updated.";
+            return view('registers.edit', compact('info'));
         }
     }
 
@@ -89,13 +99,14 @@ class RegisterController extends Controller
      * @param  \App\Register  $register
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Register $register)
+    public function destroy(Request $request, Register $register)
     {
-        if($this->currentUser()){
             $register->delete();
+            if($request->wantsJson()){
             return response()->json(['info' => 'Register  deleted successfully.'], 200);
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            $info = "Register  deleted successfully.";
+            return view('registers.register', compact('info'));
         }
     }
 

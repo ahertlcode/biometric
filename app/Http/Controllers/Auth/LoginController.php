@@ -50,54 +50,36 @@ class LoginController extends Controller
         if($this->attemptLogin($request)){
             $user = $this->guard()->user();
             $user->generateToken();
-            if($user->email_validated_at !== null && $user->status == '1'){
-                ($user) ? $user->online = 1 : '';
-                $user->save();
-                if($request->wantsJson()){
-                    return response()->json([
-                        'info' => "Login successful.",
-                        'data' => $user
-                    ], 200);
-                }else{
-                    $info = "Login Successful.";
-                    $data = $user;
-                    return view('/home', compact('info','data'));
-                }
-
-            }else if($user->email_validated_at == null){
-                $user->rememberToken();
-                Mail::to($user->email)->send(new ConfirmationEmail($user));
-                if($request->wantsJson()){
-                    return response()->json([
-                        'info' => "You must verify your e-mail before log in,\ncheck you e-mail for a verification code.\nJust sent to you again now."
-                    ], 200);
-                }else{
-                    $info = "You must verify your e-mail before log in,\ncheck you e-mail for a verification code.\nJust sent to you again now.";
-                    return view('/verify', compact('info'));
-                }
+            ($user) ? $user->online = 1 : '';
+            $user->save();
+            if($request->wantsJson()){
+                return response()->json([
+                    'info' => "Login successful.",
+                    'data' => $user
+                ], 200);
             }else{
-                if($request->wantsJson()){
-                    return response()->json([
-                        'info' => "There is a problem, you need to contact support. Thank you."
-                    ], 200);
-                }else{
-                    $info = "There is a problem, you need to contact support. Thank you.";
-                    return view('/verify', compact('info'));
-                }
+                $info = "Login Successful.";
+                $data = $user;
+                return view('/home', compact('info','data'));
             }
-
         }
     }
 
     public function logout(Request $request){
-        $user = Auth::guard('api')->user();
+        $user = Auth::guard('api')->user() ?? Auth::user();
         if($user){
             $user->api_token = null;
             $user->online = 0;
             $user->save();
-            return response()->json([
-                "info" => "You have logged out."
-            ], 200);
+            auth()->logout();
+            if($request->wantsJson()){
+                return response()->json([
+                    "info" => "You have logged out."
+                ], 200);
+            }else{
+                $info = "You have logged out.";
+                return view('welcome', compact('info'));
+            }
         }else{
             return response()->json([
                 "info" => "There is an error. Try again later."

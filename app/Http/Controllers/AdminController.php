@@ -1,11 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use App\Admin;
 use Illuminate\Http\Request;
-
 use Auth;
+use App\Admin;
 
 class AdminController extends Controller
 {
@@ -16,7 +14,7 @@ class AdminController extends Controller
      */
     protected function currentUser()
     {
-        return Auth::guard('api')->user();
+        return Auth::guard('api')->user() ?? Auth::user();
     }
 
     /**
@@ -24,13 +22,20 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        if($this->currentUser()){
-            return Admin::where('status', 'on');
+        $admins = Admin::all();
+        if($request->wantsJson()){
+            return $admins;
+
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            return view('admins.admin', compact('admins'));
         }
+    }
+
+    public function create(){
+        $sections = \App\Section::all();
+            return view('admins.create', compact('sections'));
     }
 
     /**
@@ -41,13 +46,14 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        if($this->currentUser()){
             Admin::create($request->all());
-            return response()->json([
+            if($request->wantsJson()){
+                return response()->json([
                 "info"=>"Admin successfully created."
             ], 201);
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            $info = "Admin successfully created";
+            return view('admins.create',compact('info'));
         }
     }
 
@@ -57,13 +63,17 @@ class AdminController extends Controller
      * @param  \App\Admin $admin
      * @return \Illuminate\Http\Response
      */
-    public function show(Admin $admin)
+    public function show(Request $request, Admin $admin)
     {
-        if($this->currentUser()){
+        if($request->wantsJson()){
             return $admin;
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            return view('admins.view', compact('admin'));
         }
+    }
+
+    public function edit(Admin $admin){
+        return view('admins.edit',compact('admin'));
     }
 
     /**
@@ -75,11 +85,12 @@ class AdminController extends Controller
      */
     public function update(Request $request, Admin $admin)
     {
-        if($this->currentUser()){
             $admin->update($request->all());
+            if($request->wantsJson()){
             return response()->json(['info' => 'Admin successfully updated.'], 200);
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            $info = "Admin successfully updated.";
+            return view('admins.edit', compact('info'));
         }
     }
 
@@ -89,13 +100,14 @@ class AdminController extends Controller
      * @param  \App\Admin  $admin
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Admin $admin)
+    public function destroy(Request $request, Admin $admin)
     {
-        if($this->currentUser()){
             $admin->delete();
+            if($request->wantsJson()){
             return response()->json(['info' => 'Admin  deleted successfully.'], 200);
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            $info = "Admin  deleted successfully.";
+            return view('admins.admin', compact('info'));
         }
     }
 

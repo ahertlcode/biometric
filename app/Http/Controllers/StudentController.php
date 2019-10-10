@@ -1,11 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use App\Student;
 use Illuminate\Http\Request;
-
 use Auth;
+use App\Student;
 
 class StudentController extends Controller
 {
@@ -16,7 +14,7 @@ class StudentController extends Controller
      */
     protected function currentUser()
     {
-        return Auth::guard('api')->user();
+        return Auth::guard('api')->user() ?? Auth::user();
     }
 
     /**
@@ -24,13 +22,19 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        if($this->currentUser()){
-            return Student::where('status', 'on');
+        $students = Student::all();
+        if($request->wantsJson()){
+            return $students;
+
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            return view('students.student', compact('students'));
         }
+    }
+
+    public function create(){
+            return view('students.create');
     }
 
     /**
@@ -41,13 +45,14 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        if($this->currentUser()){
             Student::create($request->all());
-            return response()->json([
+            if($request->wantsJson()){
+                return response()->json([
                 "info"=>"Student successfully created."
             ], 201);
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            $info = "Student successfully created";
+            return view('students.create',compact('info'));
         }
     }
 
@@ -57,13 +62,17 @@ class StudentController extends Controller
      * @param  \App\Student $student
      * @return \Illuminate\Http\Response
      */
-    public function show(Student $student)
+    public function show(Request $request, Student $student)
     {
-        if($this->currentUser()){
+        if($request->wantsJson()){
             return $student;
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            return view('students.view', compact('student'));
         }
+    }
+
+    public function edit(Student $student){
+        return view('students.edit',compact('student'));
     }
 
     /**
@@ -75,11 +84,12 @@ class StudentController extends Controller
      */
     public function update(Request $request, Student $student)
     {
-        if($this->currentUser()){
             $student->update($request->all());
+            if($request->wantsJson()){
             return response()->json(['info' => 'Student successfully updated.'], 200);
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            $info = "Student successfully updated.";
+            return view('students.edit', compact('info'));
         }
     }
 
@@ -89,13 +99,14 @@ class StudentController extends Controller
      * @param  \App\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Student $student)
+    public function destroy(Request $request, Student $student)
     {
-        if($this->currentUser()){
             $student->delete();
+            if($request->wantsJson()){
             return response()->json(['info' => 'Student  deleted successfully.'], 200);
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            $info = "Student  deleted successfully.";
+            return view('students.student', compact('info'));
         }
     }
 

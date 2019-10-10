@@ -11,7 +11,7 @@ class Admin extends Model
      * Mass assignable columns
      *
      */
-    protected $fillable = ['user_id','name','designation','section_id'];
+    protected $fillable = ['user_id','staff_number','name','designation','section_id'];
 
     /**
      *

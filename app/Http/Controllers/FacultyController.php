@@ -1,11 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use App\Faculty;
 use Illuminate\Http\Request;
-
 use Auth;
+use App\Faculty;
 
 class FacultyController extends Controller
 {
@@ -16,7 +14,7 @@ class FacultyController extends Controller
      */
     protected function currentUser()
     {
-        return Auth::guard('api')->user();
+        return Auth::guard('api')->user() ?? Auth::user();
     }
 
     /**
@@ -24,13 +22,19 @@ class FacultyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        if($this->currentUser()){
-            return Faculty::where('status', 'on');
+        $faculties = Faculty::all();
+        if($request->wantsJson()){
+            return $faculties;
+
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            return view('faculties.faculty', compact('faculties'));
         }
+    }
+
+    public function create(){
+            return view('faculties.create');
     }
 
     /**
@@ -41,13 +45,14 @@ class FacultyController extends Controller
      */
     public function store(Request $request)
     {
-        if($this->currentUser()){
             Faculty::create($request->all());
-            return response()->json([
+            if($request->wantsJson()){
+                return response()->json([
                 "info"=>"Faculty successfully created."
             ], 201);
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            $info = "Faculty successfully created";
+            return view('faculties.create',compact('info'));
         }
     }
 
@@ -57,13 +62,17 @@ class FacultyController extends Controller
      * @param  \App\Faculty $faculty
      * @return \Illuminate\Http\Response
      */
-    public function show(Faculty $faculty)
+    public function show(Request $request, Faculty $faculty)
     {
-        if($this->currentUser()){
+        if($request->wantsJson()){
             return $faculty;
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            return view('faculties.view', compact('faculty'));
         }
+    }
+
+    public function edit(Faculty $faculty){
+        return view('faculties.edit',compact('faculty'));
     }
 
     /**
@@ -75,11 +84,12 @@ class FacultyController extends Controller
      */
     public function update(Request $request, Faculty $faculty)
     {
-        if($this->currentUser()){
             $faculty->update($request->all());
+            if($request->wantsJson()){
             return response()->json(['info' => 'Faculty successfully updated.'], 200);
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            $info = "Faculty successfully updated.";
+            return view('faculties.edit', compact('info'));
         }
     }
 
@@ -89,13 +99,14 @@ class FacultyController extends Controller
      * @param  \App\Faculty  $faculty
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Faculty $faculty)
+    public function destroy(Request $request, Faculty $faculty)
     {
-        if($this->currentUser()){
             $faculty->delete();
+            if($request->wantsJson()){
             return response()->json(['info' => 'Faculty  deleted successfully.'], 200);
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            $info = "Faculty  deleted successfully.";
+            return view('faculties.faculty', compact('info'));
         }
     }
 

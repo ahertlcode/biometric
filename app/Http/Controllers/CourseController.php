@@ -1,11 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use App\Course;
 use Illuminate\Http\Request;
-
 use Auth;
+use App\Course;
 
 class CourseController extends Controller
 {
@@ -16,7 +14,7 @@ class CourseController extends Controller
      */
     protected function currentUser()
     {
-        return Auth::guard('api')->user();
+        return Auth::guard('api')->user() ?? Auth::user();
     }
 
     /**
@@ -24,13 +22,19 @@ class CourseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        if($this->currentUser()){
-            return Course::where('status', 'on');
+        $courses = Course::all();
+        if($request->wantsJson()){
+            return $courses;
+
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            return view('courses.course', compact('courses'));
         }
+    }
+
+    public function create(){
+            return view('courses.create');
     }
 
     /**
@@ -41,13 +45,14 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        if($this->currentUser()){
             Course::create($request->all());
-            return response()->json([
+            if($request->wantsJson()){
+                return response()->json([
                 "info"=>"Course successfully created."
             ], 201);
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            $info = "Course successfully created";
+            return view('courses.create',compact('info'));
         }
     }
 
@@ -57,13 +62,17 @@ class CourseController extends Controller
      * @param  \App\Course $course
      * @return \Illuminate\Http\Response
      */
-    public function show(Course $course)
+    public function show(Request $request, Course $course)
     {
-        if($this->currentUser()){
+        if($request->wantsJson()){
             return $course;
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            return view('courses.view', compact('course'));
         }
+    }
+
+    public function edit(Course $course){
+        return view('courses.edit',compact('course'));
     }
 
     /**
@@ -75,11 +84,12 @@ class CourseController extends Controller
      */
     public function update(Request $request, Course $course)
     {
-        if($this->currentUser()){
             $course->update($request->all());
+            if($request->wantsJson()){
             return response()->json(['info' => 'Course successfully updated.'], 200);
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            $info = "Course successfully updated.";
+            return view('courses.edit', compact('info'));
         }
     }
 
@@ -89,13 +99,14 @@ class CourseController extends Controller
      * @param  \App\Course  $course
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Course $course)
+    public function destroy(Request $request, Course $course)
     {
-        if($this->currentUser()){
             $course->delete();
+            if($request->wantsJson()){
             return response()->json(['info' => 'Course  deleted successfully.'], 200);
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            $info = "Course  deleted successfully.";
+            return view('courses.course', compact('info'));
         }
     }
 

@@ -1,11 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use App\Level;
 use Illuminate\Http\Request;
-
 use Auth;
+use App\Level;
 
 class LevelController extends Controller
 {
@@ -16,7 +14,7 @@ class LevelController extends Controller
      */
     protected function currentUser()
     {
-        return Auth::guard('api')->user();
+        return Auth::guard('api')->user() ?? Auth::user();
     }
 
     /**
@@ -24,13 +22,19 @@ class LevelController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        if($this->currentUser()){
-            return Level::where('status', 'on');
+        $levels = Level::all();
+        if($request->wantsJson()){
+            return $levels;
+
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            return view('levels.level', compact('levels'));
         }
+    }
+
+    public function create(){
+            return view('levels.create');
     }
 
     /**
@@ -41,13 +45,14 @@ class LevelController extends Controller
      */
     public function store(Request $request)
     {
-        if($this->currentUser()){
             Level::create($request->all());
-            return response()->json([
+            if($request->wantsJson()){
+                return response()->json([
                 "info"=>"Level successfully created."
             ], 201);
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            $info = "Level successfully created";
+            return view('levels.create',compact('info'));
         }
     }
 
@@ -57,13 +62,17 @@ class LevelController extends Controller
      * @param  \App\Level $level
      * @return \Illuminate\Http\Response
      */
-    public function show(Level $level)
+    public function show(Request $request, Level $level)
     {
-        if($this->currentUser()){
+        if($request->wantsJson()){
             return $level;
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            return view('levels.view', compact('level'));
         }
+    }
+
+    public function edit(Level $level){
+        return view('levels.edit',compact('level'));
     }
 
     /**
@@ -75,11 +84,12 @@ class LevelController extends Controller
      */
     public function update(Request $request, Level $level)
     {
-        if($this->currentUser()){
             $level->update($request->all());
+            if($request->wantsJson()){
             return response()->json(['info' => 'Level successfully updated.'], 200);
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            $info = "Level successfully updated.";
+            return view('levels.edit', compact('info'));
         }
     }
 
@@ -89,13 +99,14 @@ class LevelController extends Controller
      * @param  \App\Level  $level
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Level $level)
+    public function destroy(Request $request, Level $level)
     {
-        if($this->currentUser()){
             $level->delete();
+            if($request->wantsJson()){
             return response()->json(['info' => 'Level  deleted successfully.'], 200);
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            $info = "Level  deleted successfully.";
+            return view('levels.level', compact('info'));
         }
     }
 

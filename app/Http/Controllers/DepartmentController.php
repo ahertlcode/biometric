@@ -1,11 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use App\Department;
 use Illuminate\Http\Request;
-
 use Auth;
+use App\Department;
 
 class DepartmentController extends Controller
 {
@@ -16,7 +14,7 @@ class DepartmentController extends Controller
      */
     protected function currentUser()
     {
-        return Auth::guard('api')->user();
+        return Auth::guard('api')->user() ?? Auth::user();
     }
 
     /**
@@ -24,13 +22,19 @@ class DepartmentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        if($this->currentUser()){
-            return Department::where('status', 'on');
+        $departments = Department::all();
+        if($request->wantsJson()){
+            return $departments;
+
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            return view('departments.department', compact('departments'));
         }
+    }
+
+    public function create(){
+            return view('departments.create');
     }
 
     /**
@@ -41,13 +45,14 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
-        if($this->currentUser()){
             Department::create($request->all());
-            return response()->json([
+            if($request->wantsJson()){
+                return response()->json([
                 "info"=>"Department successfully created."
             ], 201);
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            $info = "Department successfully created";
+            return view('departments.create',compact('info'));
         }
     }
 
@@ -57,13 +62,17 @@ class DepartmentController extends Controller
      * @param  \App\Department $department
      * @return \Illuminate\Http\Response
      */
-    public function show(Department $department)
+    public function show(Request $request, Department $department)
     {
-        if($this->currentUser()){
+        if($request->wantsJson()){
             return $department;
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            return view('departments.view', compact('department'));
         }
+    }
+
+    public function edit(Department $department){
+        return view('departments.edit',compact('department'));
     }
 
     /**
@@ -75,11 +84,12 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, Department $department)
     {
-        if($this->currentUser()){
             $department->update($request->all());
+            if($request->wantsJson()){
             return response()->json(['info' => 'Department successfully updated.'], 200);
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            $info = "Department successfully updated.";
+            return view('departments.edit', compact('info'));
         }
     }
 
@@ -89,13 +99,14 @@ class DepartmentController extends Controller
      * @param  \App\Department  $department
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Department $department)
+    public function destroy(Request $request, Department $department)
     {
-        if($this->currentUser()){
             $department->delete();
+            if($request->wantsJson()){
             return response()->json(['info' => 'Department  deleted successfully.'], 200);
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            $info = "Department  deleted successfully.";
+            return view('departments.department', compact('info'));
         }
     }
 

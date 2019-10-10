@@ -1,11 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use App\PasswordReset;
 use Illuminate\Http\Request;
-
 use Auth;
+use App\PasswordReset;
 
 class PasswordResetController extends Controller
 {
@@ -16,7 +14,7 @@ class PasswordResetController extends Controller
      */
     protected function currentUser()
     {
-        return Auth::guard('api')->user();
+        return Auth::guard('api')->user() ?? Auth::user();
     }
 
     /**
@@ -24,13 +22,19 @@ class PasswordResetController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        if($this->currentUser()){
-            return PasswordReset::where('status', 'on');
+        $password_resets = PasswordReset::all();
+        if($request->wantsJson()){
+            return $password_resets;
+
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            return view('password_resets.password_reset', compact('password_resets'));
         }
+    }
+
+    public function create(){
+            return view('password_resets.create');
     }
 
     /**
@@ -41,13 +45,14 @@ class PasswordResetController extends Controller
      */
     public function store(Request $request)
     {
-        if($this->currentUser()){
             PasswordReset::create($request->all());
-            return response()->json([
+            if($request->wantsJson()){
+                return response()->json([
                 "info"=>"Password_reset successfully created."
             ], 201);
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            $info = "Password_reset successfully created";
+            return view('password_resets.create',compact('info'));
         }
     }
 
@@ -57,13 +62,17 @@ class PasswordResetController extends Controller
      * @param  \App\PasswordReset $password_reset
      * @return \Illuminate\Http\Response
      */
-    public function show(PasswordReset $password_reset)
+    public function show(Request $request, PasswordReset $password_reset)
     {
-        if($this->currentUser()){
+        if($request->wantsJson()){
             return $password_reset;
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            return view('password_resets.view', compact('password_reset'));
         }
+    }
+
+    public function edit(PasswordReset $password_reset){
+        return view('password_resets.edit',compact('password_reset'));
     }
 
     /**
@@ -75,11 +84,12 @@ class PasswordResetController extends Controller
      */
     public function update(Request $request, PasswordReset $password_reset)
     {
-        if($this->currentUser()){
             $password_reset->update($request->all());
+            if($request->wantsJson()){
             return response()->json(['info' => 'Password_reset successfully updated.'], 200);
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            $info = "Password_reset successfully updated.";
+            return view('password_resets.edit', compact('info'));
         }
     }
 
@@ -89,13 +99,14 @@ class PasswordResetController extends Controller
      * @param  \App\PasswordReset  $password_reset
      * @return \Illuminate\Http\Response
      */
-    public function destroy(PasswordReset $password_reset)
+    public function destroy(Request $request, PasswordReset $password_reset)
     {
-        if($this->currentUser()){
             $password_reset->delete();
+            if($request->wantsJson()){
             return response()->json(['info' => 'Password_reset  deleted successfully.'], 200);
         }else{
-            return response()->json(["info"=>"You must be logged in."], 403);
+            $info = "Password_reset  deleted successfully.";
+            return view('password_resets.password_reset', compact('info'));
         }
     }
 
