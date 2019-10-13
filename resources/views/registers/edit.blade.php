@@ -10,9 +10,21 @@
     <h1 class="title is-3">EDIT REGISTER</h1>
     
     <div class="field">
+        <label class="label">User</label>
+        <div class="select" style="width:100%;">
+            <select id="user_id" name="user_id" class="input @error('user_id') is-invalid @enderror" >
+                <option value="-1">Select User </option>
+                @foreach($users as $user)
+                <option value="{{$user->id}}">{{$user->user}}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+    
+    <div class="field">
         <label class="label">Course</label>
         <div class="select" style="width:100%;">
-            <select class="input @error('course_id') is-invalid @enderror" >
+            <select id="course_id" name="course_id" class="input @error('course_id') is-invalid @enderror" >
                 <option value="-1">Select Course </option>
                 @foreach($courses as $course)
                 <option value="{{$course->id}}">{{$course->course}}</option>

@@ -2,8 +2,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Auth;
+use Illuminate\Support\Facades\Input;
+use Maatwebsite\Excel\Facades\Excel;
 use App\UserType;
+use App\Imports\UserTypesImport;
+use Auth;
 
 class UserTypeController extends Controller
 {
@@ -52,7 +55,8 @@ class UserTypeController extends Controller
             ], 201);
         }else{
             $info = "User_type successfully created";
-            return view('user_types.create',compact('info'));
+            $user_types = UserType::all();
+            return view('user_types.user_type',compact('info','user_types'));
         }
     }
 
@@ -89,7 +93,8 @@ class UserTypeController extends Controller
             return response()->json(['info' => 'User_type successfully updated.'], 200);
         }else{
             $info = "User_type successfully updated.";
-            return view('user_types.edit', compact('info'));
+            $user_types = UserType::all();
+            return view('user_types.user_type',compact('info','user_types'));
         }
     }
 
@@ -108,6 +113,17 @@ class UserTypeController extends Controller
             $info = "User_type  deleted successfully.";
             return view('user_types.user_type', compact('info'));
         }
+    }
+
+    public function getFile()
+    {
+        return view('user_types.upload');
+    }
+
+    public function upload(Request $request)
+    {
+        Excel::import(new User_typesImport, request()->file('user_type_file'));
+        return redirect('user_types.user_type');
     }
 
 

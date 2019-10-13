@@ -2,8 +2,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Auth;
+use Illuminate\Support\Facades\Input;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Register;
+use App\Imports\RegistersImport;
+use Auth;
 
 class RegisterController extends Controller
 {
@@ -34,7 +37,9 @@ class RegisterController extends Controller
     }
 
     public function create(){
-            return view('registers.create');
+        $users = \App\User::all();
+    $courses = \App\Course::all();
+        return view('registers.create',compact('users','courses'));
     }
 
     /**
@@ -52,7 +57,8 @@ class RegisterController extends Controller
             ], 201);
         }else{
             $info = "Register successfully created";
-            return view('registers.create',compact('info'));
+            $registers = Register::all();
+            return view('registers.register',compact('info','registers'));
         }
     }
 
@@ -89,7 +95,8 @@ class RegisterController extends Controller
             return response()->json(['info' => 'Register successfully updated.'], 200);
         }else{
             $info = "Register successfully updated.";
-            return view('registers.edit', compact('info'));
+            $registers = Register::all();
+            return view('registers.register',compact('info','registers'));
         }
     }
 
@@ -108,6 +115,17 @@ class RegisterController extends Controller
             $info = "Register  deleted successfully.";
             return view('registers.register', compact('info'));
         }
+    }
+
+    public function getFile()
+    {
+        return view('registers.upload');
+    }
+
+    public function upload(Request $request)
+    {
+        Excel::import(new RegistersImport, request()->file('register_file'));
+        return redirect('registers.register');
     }
 
 

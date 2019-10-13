@@ -2,8 +2,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Auth;
+use Illuminate\Support\Facades\Input;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Faculty;
+use App\Imports\FacultiesImport;
+use Auth;
 
 class FacultyController extends Controller
 {
@@ -52,7 +55,8 @@ class FacultyController extends Controller
             ], 201);
         }else{
             $info = "Faculty successfully created";
-            return view('faculties.create',compact('info'));
+            $faculties = Faculty::all();
+            return view('faculties.faculty',compact('info','faculties'));
         }
     }
 
@@ -89,7 +93,8 @@ class FacultyController extends Controller
             return response()->json(['info' => 'Faculty successfully updated.'], 200);
         }else{
             $info = "Faculty successfully updated.";
-            return view('faculties.edit', compact('info'));
+            $faculties = Faculty::all();
+            return view('faculties.faculty',compact('info','faculties'));
         }
     }
 
@@ -108,6 +113,17 @@ class FacultyController extends Controller
             $info = "Faculty  deleted successfully.";
             return view('faculties.faculty', compact('info'));
         }
+    }
+
+    public function getFile()
+    {
+        return view('faculties.upload');
+    }
+
+    public function upload(Request $request)
+    {
+        Excel::import(new FacultiesImport, request()->file('faculty_file'));
+        return redirect('faculties.faculty');
     }
 
 

@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Level extends Model
 {
     /**
+     * Mass assignable attributes.
      *
-     * Mass assignable columns
-     *
+     * @var array
      */
     protected $fillable = ['level'];
 

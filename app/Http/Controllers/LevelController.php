@@ -2,8 +2,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Auth;
+use Illuminate\Support\Facades\Input;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Level;
+use App\Imports\LevelsImport;
+use Auth;
 
 class LevelController extends Controller
 {
@@ -52,7 +55,8 @@ class LevelController extends Controller
             ], 201);
         }else{
             $info = "Level successfully created";
-            return view('levels.create',compact('info'));
+            $levels = Level::all();
+            return view('levels.level',compact('info','levels'));
         }
     }
 
@@ -89,7 +93,8 @@ class LevelController extends Controller
             return response()->json(['info' => 'Level successfully updated.'], 200);
         }else{
             $info = "Level successfully updated.";
-            return view('levels.edit', compact('info'));
+            $levels = Level::all();
+            return view('levels.level',compact('info','levels'));
         }
     }
 
@@ -108,6 +113,17 @@ class LevelController extends Controller
             $info = "Level  deleted successfully.";
             return view('levels.level', compact('info'));
         }
+    }
+
+    public function getFile()
+    {
+        return view('levels.upload');
+    }
+
+    public function upload(Request $request)
+    {
+        Excel::import(new LevelsImport, request()->file('level_file'));
+        return redirect('levels.level');
     }
 
 

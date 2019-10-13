@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class UserType extends Model
 {
     /**
+     * Mass assignable attributes.
      *
-     * Mass assignable columns
-     *
+     * @var array
      */
     protected $fillable = ['user_type'];
 

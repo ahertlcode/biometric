@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Admin extends Model
 {
     /**
+     * Mass assignable attributes.
      *
-     * Mass assignable columns
-     *
+     * @var array
      */
     protected $fillable = ['user_id','staff_number','name','designation','section_id'];
 

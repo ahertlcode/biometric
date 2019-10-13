@@ -2,8 +2,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Auth;
+use Illuminate\Support\Facades\Input;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Student;
+use App\Imports\StudentsImport;
+use Auth;
 
 class StudentController extends Controller
 {
@@ -34,7 +37,10 @@ class StudentController extends Controller
     }
 
     public function create(){
-            return view('students.create');
+        $users = \App\User::all();
+    $levels = \App\Level::all();
+    $departments = \App\Department::all();
+        return view('students.create',compact('users','levels','departments'));
     }
 
     /**
@@ -52,7 +58,8 @@ class StudentController extends Controller
             ], 201);
         }else{
             $info = "Student successfully created";
-            return view('students.create',compact('info'));
+            $students = Student::all();
+            return view('students.student',compact('info','students'));
         }
     }
 
@@ -89,7 +96,8 @@ class StudentController extends Controller
             return response()->json(['info' => 'Student successfully updated.'], 200);
         }else{
             $info = "Student successfully updated.";
-            return view('students.edit', compact('info'));
+            $students = Student::all();
+            return view('students.student',compact('info','students'));
         }
     }
 
@@ -108,6 +116,17 @@ class StudentController extends Controller
             $info = "Student  deleted successfully.";
             return view('students.student', compact('info'));
         }
+    }
+
+    public function getFile()
+    {
+        return view('students.upload');
+    }
+
+    public function upload(Request $request)
+    {
+        Excel::import(new StudentsImport, request()->file('student_file'));
+        return redirect('students.student');
     }
 
 

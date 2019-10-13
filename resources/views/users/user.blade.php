@@ -1,30 +1,12 @@
 @extends('layouts.table')
-@section('search')
-    <div class="field">
-        <div class="control has-icons-right">
-            <input type="text" class="input">
-            <span class="icon is-right">
-                <i class="fa fa-search"></i>
-            </span>
-        </div>
-    </div>
-@endsection
-
-@section('download-icons')
-    <a href="#" title="export to pdf">
-        <i class="fas fa-file-pdf fa-2x"></i>
-    </a>&nbsp;&nbsp;
-    <a href="#" title="export to excel">
-        <i class="fas fa-file-excel fa-2x"></i>
-    </a>&nbsp;&nbsp;
-    <a href="#" title="export to csv">
-        <i class="fas fa-file-alt fa-2x"></i>
-    </a>&nbsp;&nbsp;
-    <a href="#" title="upload file">
+@section('upload')
+    <a href="{{ URL::to('users/getFile') }}" title="upload file">
         <i class="fas fa-file-upload fa-2x"></i>
     </a>
 @endsection
-
+@section('download-icons')
+    <div class="downloads"></div>
+@endsection
 @section('add-new')
     <div class="control">
         <div class="tags has-addons">
@@ -37,20 +19,21 @@
 @endsection
 
 @section('data-table')
-    <table class="table is-striped is-hoverable is-fullwidth">
+    <table id="user" class="table is-striped is-hoverable is-fullwidth">
         <thead>
             <th>S/N</th>
-            <th>user_name</th>
-            <th>user_type_id</th>
-            <th>email</th>
-            <th>email_verified_at</th>
-            <th>phone</th>
-            <th>password</th>
-            <th>fingerprint</th>
-            <th>online</th>
-            <th>created_at</th>
-            <th>updated_at</th>
-            <th colspan="2" style="width:5%;">&nbsp;</th>
+            <th>USER NAME </th>
+            <th>USER TYPE ID </th>
+            <th>EMAIL</th>
+            <th>EMAIL VERIFIED AT </th>
+            <th>PHONE</th>
+            <th>PASSWORD</th>
+            <th>FINGERPRINT</th>
+            <th>API TOKEN </th>
+            <th>REMEMBER TOKEN </th>
+            <th>ONLINE</th>
+            <th style="width:5%;">&nbsp;</th>
+            <th style="width:5%;">&nbsp;</th>
         </thead>
         <tbody>
         <?php $i = 0; ?>
@@ -65,9 +48,9 @@
                 <td>{{ $user->phone }}</td>
                 <td>{{ $user->password }}</td>
                 <td>{{ $user->fingerprint }}</td>
+                <td>{{ $user->api_token }}</td>
+                <td>{{ $user->remember_token }}</td>
                 <td>{{ $user->online }}</td>
-                <td>{{ $user->created_at }}</td>
-                <td>{{ $user->updated_at }}</td>
                 <td>
                     <a href="{{ URL::to('users/'.$user->id.'/edit') }}" title="Edit">
                         <i class="fas fa-edit"></i>
@@ -82,4 +65,17 @@
         @endforeach
         </tbody>
     </table>
+@endsection
+@section('script')
+    <script>
+        $(document).ready(function(){
+            var table = $("#user").DataTable({
+                buttons:[
+                    'copy', 'excel', 'pdf'
+                ]
+            });
+            table.buttons().container()
+                .appendTo( $('.downloads') );
+        });
+    </script>
 @endsection

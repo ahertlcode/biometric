@@ -10,10 +10,10 @@
     <h1 class="title is-3">EDIT DEPARTMENT</h1>
     
     <div class="field">
-        <label class="label">Department Name </label>
+        <label class="label">Department</label>
         <div class="control">
-            <input id="department_name" name="department_name" class="input @error('department_name') is-invalid @enderror" value="{{ old('department_name') }}" type="text"  required>
-            @error('department_name')
+            <input id="department" name="department" class="input @error('department') is-invalid @enderror" value="{{ old('department',departments->department) }}" type="text"  required>
+            @error('department')
             <span class="notification is-danger">
                 <strong>{{ $message }}</strong>
             </span>
@@ -23,7 +23,7 @@
     <div class="field">
         <label class="label">Faculty</label>
         <div class="select" style="width:100%;">
-            <select class="input @error('faculty_id') is-invalid @enderror" >
+            <select id="faculty_id" name="faculty_id" class="input @error('faculty_id') is-invalid @enderror" >
                 <option value="-1">Select Faculty </option>
                 @foreach($faculties as $faculty)
                 <option value="{{$faculty->id}}">{{$faculty->faculty}}</option>

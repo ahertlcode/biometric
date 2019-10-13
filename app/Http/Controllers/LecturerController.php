@@ -2,8 +2,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Auth;
+use Illuminate\Support\Facades\Input;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Lecturer;
+use App\Imports\LecturersImport;
+use Auth;
 
 class LecturerController extends Controller
 {
@@ -34,7 +37,9 @@ class LecturerController extends Controller
     }
 
     public function create(){
-            return view('lecturers.create');
+        $users = \App\User::all();
+    $departments = \App\Department::all();
+        return view('lecturers.create',compact('users','departments'));
     }
 
     /**
@@ -52,7 +57,8 @@ class LecturerController extends Controller
             ], 201);
         }else{
             $info = "Lecturer successfully created";
-            return view('lecturers.create',compact('info'));
+            $lecturers = Lecturer::all();
+            return view('lecturers.lecturer',compact('info','lecturers'));
         }
     }
 
@@ -89,7 +95,8 @@ class LecturerController extends Controller
             return response()->json(['info' => 'Lecturer successfully updated.'], 200);
         }else{
             $info = "Lecturer successfully updated.";
-            return view('lecturers.edit', compact('info'));
+            $lecturers = Lecturer::all();
+            return view('lecturers.lecturer',compact('info','lecturers'));
         }
     }
 
@@ -108,6 +115,17 @@ class LecturerController extends Controller
             $info = "Lecturer  deleted successfully.";
             return view('lecturers.lecturer', compact('info'));
         }
+    }
+
+    public function getFile()
+    {
+        return view('lecturers.upload');
+    }
+
+    public function upload(Request $request)
+    {
+        Excel::import(new LecturersImport, request()->file('lecturer_file'));
+        return redirect('lecturers.lecturer');
     }
 
 

@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Section extends Model
 {
     /**
+     * Mass assignable attributes.
      *
-     * Mass assignable columns
-     *
+     * @var array
      */
-    protected $fillable = ['section_name'];
+    protected $fillable = ['section'];
 
     /**
      *

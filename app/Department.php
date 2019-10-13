@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Department extends Model
 {
     /**
+     * Mass assignable attributes.
      *
-     * Mass assignable columns
-     *
+     * @var array
      */
-    protected $fillable = ['department_name','faculty_id'];
+    protected $fillable = ['department','faculty_id'];
 
     /**
      *

@@ -9,52 +9,45 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
-
     /**
-     * The attributes that are mass assignable.
+     * Mass assignable attributes.
      *
      * @var array
      */
-    protected $fillable = [
-        'user_name','user_type_id','email','phone','password'
-    ];
+    protected $fillable = ['user_name','user_type_id','email','email_verified_at','phone','password','fingerprint','api_token','remember_token','online'];
 
     /**
-     * The attributes that should be hidden for arrays.
      *
-     * @var array
-     */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
-
-    /**
-     * The attributes that should be cast to native types.
+     * Hidden columns not to be returned in query result.
      *
-     * @var array
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    protected $hidden = ['id','created_at','updated_at','status'];
 
     public function generateToken()
     {
         $this->api_token = str_random(60);
         $this->save();
-
         return $this->api_token;
     }
-
-    public function rememberToken(){
+    public function rememberToken()
+    {
         $rmtoken = "";
-
         for($i=0; $i<6; $i++){
             $rmtoken .= rand(1,9);
         }
-
         $this->remember_token = $rmtoken;
         $this->save();
-
         return $this->remember_token;
     }
+    /**
+     * Get the user_type for this model.
+     *
+     * @return App\UserType
+     */
+    public function user_type()
+    {
+        return $this->belongsTo('App\UserType', 'user_type_id')->get();
+    }
+
+
 }

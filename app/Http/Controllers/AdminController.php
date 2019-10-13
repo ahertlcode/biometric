@@ -2,8 +2,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Auth;
+use Illuminate\Support\Facades\Input;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Admin;
+use App\Imports\AdminsImport;
+use Auth;
 
 class AdminController extends Controller
 {
@@ -34,8 +37,9 @@ class AdminController extends Controller
     }
 
     public function create(){
-        $sections = \App\Section::all();
-            return view('admins.create', compact('sections'));
+        $users = \App\User::all();
+    $sections = \App\Section::all();
+        return view('admins.create',compact('users','sections'));
     }
 
     /**
@@ -53,7 +57,8 @@ class AdminController extends Controller
             ], 201);
         }else{
             $info = "Admin successfully created";
-            return view('admins.create',compact('info'));
+            $admins = Admin::all();
+            return view('admins.admin',compact('info','admins'));
         }
     }
 
@@ -90,7 +95,8 @@ class AdminController extends Controller
             return response()->json(['info' => 'Admin successfully updated.'], 200);
         }else{
             $info = "Admin successfully updated.";
-            return view('admins.edit', compact('info'));
+            $admins = Admin::all();
+            return view('admins.admin',compact('info','admins'));
         }
     }
 
@@ -109,6 +115,17 @@ class AdminController extends Controller
             $info = "Admin  deleted successfully.";
             return view('admins.admin', compact('info'));
         }
+    }
+
+    public function getFile()
+    {
+        return view('admins.upload');
+    }
+
+    public function upload(Request $request)
+    {
+        Excel::import(new AdminsImport, request()->file('admin_file'));
+        return redirect('admins.admin');
     }
 
 

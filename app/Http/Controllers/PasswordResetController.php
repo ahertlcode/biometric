@@ -2,8 +2,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Auth;
+use Illuminate\Support\Facades\Input;
+use Maatwebsite\Excel\Facades\Excel;
 use App\PasswordReset;
+use App\Imports\PasswordResetsImport;
+use Auth;
 
 class PasswordResetController extends Controller
 {
@@ -34,7 +37,8 @@ class PasswordResetController extends Controller
     }
 
     public function create(){
-            return view('password_resets.create');
+        $emails = \App\Email::all();
+        return view('password_resets.create',compact('emails'));
     }
 
     /**
@@ -52,7 +56,8 @@ class PasswordResetController extends Controller
             ], 201);
         }else{
             $info = "Password_reset successfully created";
-            return view('password_resets.create',compact('info'));
+            $password_resets = PasswordReset::all();
+            return view('password_resets.password_reset',compact('info','password_resets'));
         }
     }
 
@@ -89,7 +94,8 @@ class PasswordResetController extends Controller
             return response()->json(['info' => 'Password_reset successfully updated.'], 200);
         }else{
             $info = "Password_reset successfully updated.";
-            return view('password_resets.edit', compact('info'));
+            $password_resets = PasswordReset::all();
+            return view('password_resets.password_reset',compact('info','password_resets'));
         }
     }
 
@@ -108,6 +114,17 @@ class PasswordResetController extends Controller
             $info = "Password_reset  deleted successfully.";
             return view('password_resets.password_reset', compact('info'));
         }
+    }
+
+    public function getFile()
+    {
+        return view('password_resets.upload');
+    }
+
+    public function upload(Request $request)
+    {
+        Excel::import(new Password_resetsImport, request()->file('password_reset_file'));
+        return redirect('password_resets.password_reset');
     }
 
 

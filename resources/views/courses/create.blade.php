@@ -10,10 +10,10 @@
     <h1 class="title is-3">ADD COURSE</h1>
     
     <div class="field">
-        <label class="label">Course Code </label>
+        <label class="label">Course</label>
         <div class="control">
-            <input id="course_code" name="course_code" class="input @error('course_code') is-invalid @enderror" value="{{ old('course_code') }}" type="text"  required>
-            @error('course_code')
+            <input id="course" name="course" class="input @error('course') is-invalid @enderror" value="{{ old('course',courses->course) }}" type="text"  required>
+            @error('course')
             <span class="notification is-danger">
                 <strong>{{ $message }}</strong>
             </span>
@@ -23,7 +23,7 @@
     <div class="field">
         <label class="label">Course Title </label>
         <div class="control">
-            <input id="course_title" name="course_title" class="input @error('course_title') is-invalid @enderror" value="{{ old('course_title') }}" type="text"  required>
+            <input id="course_title" name="course_title" class="input @error('course_title') is-invalid @enderror" value="{{ old('course_title',courses->course_title) }}" type="text"  required>
             @error('course_title')
             <span class="notification is-danger">
                 <strong>{{ $message }}</strong>

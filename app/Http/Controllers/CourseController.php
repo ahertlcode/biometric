@@ -2,8 +2,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Auth;
+use Illuminate\Support\Facades\Input;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Course;
+use App\Imports\CoursesImport;
+use Auth;
 
 class CourseController extends Controller
 {
@@ -52,7 +55,8 @@ class CourseController extends Controller
             ], 201);
         }else{
             $info = "Course successfully created";
-            return view('courses.create',compact('info'));
+            $courses = Course::all();
+            return view('courses.course',compact('info','courses'));
         }
     }
 
@@ -89,7 +93,8 @@ class CourseController extends Controller
             return response()->json(['info' => 'Course successfully updated.'], 200);
         }else{
             $info = "Course successfully updated.";
-            return view('courses.edit', compact('info'));
+            $courses = Course::all();
+            return view('courses.course',compact('info','courses'));
         }
     }
 
@@ -108,6 +113,17 @@ class CourseController extends Controller
             $info = "Course  deleted successfully.";
             return view('courses.course', compact('info'));
         }
+    }
+
+    public function getFile()
+    {
+        return view('courses.upload');
+    }
+
+    public function upload(Request $request)
+    {
+        Excel::import(new CoursesImport, request()->file('course_file'));
+        return redirect('courses.course');
     }
 
 

@@ -12,7 +12,7 @@
     <div class="field">
         <label class="label">User Name </label>
         <div class="control">
-            <input id="user_name" name="user_name" class="input @error('user_name') is-invalid @enderror" value="{{ old('user_name') }}" type="text"  required>
+            <input id="user_name" name="user_name" class="input @error('user_name') is-invalid @enderror" value="{{ old('user_name',users->user_name) }}" type="text"  required>
             @error('user_name')
             <span class="notification is-danger">
                 <strong>{{ $message }}</strong>
@@ -23,7 +23,7 @@
     <div class="field">
         <label class="label">User Type</label>
         <div class="select" style="width:100%;">
-            <select class="input @error('user_type_id') is-invalid @enderror" >
+            <select id="user_type_id" name="user_type_id" class="input @error('user_type_id') is-invalid @enderror" >
                 <option value="-1">Select User Type </option>
                 @foreach($user_types as $user_type)
                 <option value="{{$user_type->id}}">{{$user_type->user_type}}</option>
@@ -35,19 +35,8 @@
     <div class="field">
         <label class="label">Email</label>
         <div class="control">
-            <input id="email" name="email" class="input @error('email') is-invalid @enderror" value="{{ old('email') }}" type="text"  required>
+            <input id="email" name="email" class="input @error('email') is-invalid @enderror" value="{{ old('email',users->email) }}" type="text"  required>
             @error('email')
-            <span class="notification is-danger">
-                <strong>{{ $message }}</strong>
-            </span>
-            @enderror
-        </div>
-    </div>    
-    <div class="field">
-        <label class="label">Email Verified At </label>
-        <div class="control">
-            <input id="email_verified_at" name="email_verified_at" class="input @error('email_verified_at') is-invalid @enderror" value="{{ old('email_verified_at') }}" type="text" >
-            @error('email_verified_at')
             <span class="notification is-danger">
                 <strong>{{ $message }}</strong>
             </span>
@@ -57,7 +46,7 @@
     <div class="field">
         <label class="label">Phone</label>
         <div class="control">
-            <input id="phone" name="phone" class="input @error('phone') is-invalid @enderror" value="{{ old('phone') }}" type="text"  required>
+            <input id="phone" name="phone" class="input @error('phone') is-invalid @enderror" value="{{ old('phone',users->phone) }}" type="text"  required>
             @error('phone')
             <span class="notification is-danger">
                 <strong>{{ $message }}</strong>
@@ -68,7 +57,7 @@
     <div class="field">
         <label class="label">Password</label>
         <div class="control">
-            <input id="password" name="password" class="input @error('password') is-invalid @enderror" value="{{ old('password') }}" type="text"  required>
+            <input id="password" name="password" class="input @error('password') is-invalid @enderror" value="{{ old('password',users->password) }}" type="password"  required>
             @error('password')
             <span class="notification is-danger">
                 <strong>{{ $message }}</strong>
@@ -77,10 +66,10 @@
         </div>
     </div>    
     <div class="field">
-        <label class="label">Fingerprint</label>
+        <label class="label">Password Confirmation </label>
         <div class="control">
-            <input id="fingerprint" name="fingerprint" class="input @error('fingerprint') is-invalid @enderror" value="{{ old('fingerprint') }}" type="text" >
-            @error('fingerprint')
+            <input id="password_confirmation" name="password_confirmation" class="input @error('password_confirmation') is-invalid @enderror" value="{{ old('password_confirmation',users->password_confirmation) }}" type="password"  required>
+            @error('password_confirmation')
             <span class="notification is-danger">
                 <strong>{{ $message }}</strong>
             </span>

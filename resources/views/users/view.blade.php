@@ -12,8 +12,8 @@
         <li class="list-item"><strong>PHONE</strong>:&nbsp;{{ $user->phone }}</li>
         <li class="list-item"><strong>PASSWORD</strong>:&nbsp;{{ $user->password }}</li>
         <li class="list-item"><strong>FINGERPRINT</strong>:&nbsp;{{ $user->fingerprint }}</li>
+        <li class="list-item"><strong>API_TOKEN</strong>:&nbsp;{{ $user->api_token }}</li>
+        <li class="list-item"><strong>REMEMBER_TOKEN</strong>:&nbsp;{{ $user->remember_token }}</li>
         <li class="list-item"><strong>ONLINE</strong>:&nbsp;{{ $user->online }}</li>
-        <li class="list-item"><strong>CREATED_AT</strong>:&nbsp;{{ $user->created_at }}</li>
-        <li class="list-item"><strong>UPDATED_AT</strong>:&nbsp;{{ $user->updated_at }}</li>
     </div>
 @endsection

@@ -1,30 +1,12 @@
 @extends('layouts.table')
-@section('search')
-    <div class="field">
-        <div class="control has-icons-right">
-            <input type="text" class="input">
-            <span class="icon is-right">
-                <i class="fa fa-search"></i>
-            </span>
-        </div>
-    </div>
-@endsection
-
-@section('download-icons')
-    <a href="#" title="export to pdf">
-        <i class="fas fa-file-pdf fa-2x"></i>
-    </a>&nbsp;&nbsp;
-    <a href="#" title="export to excel">
-        <i class="fas fa-file-excel fa-2x"></i>
-    </a>&nbsp;&nbsp;
-    <a href="#" title="export to csv">
-        <i class="fas fa-file-alt fa-2x"></i>
-    </a>&nbsp;&nbsp;
-    <a href="#" title="upload file">
+@section('upload')
+    <a href="{{ URL::to('password_resets/getFile') }}" title="upload file">
         <i class="fas fa-file-upload fa-2x"></i>
     </a>
 @endsection
-
+@section('download-icons')
+    <div class="downloads"></div>
+@endsection
 @section('add-new')
     <div class="control">
         <div class="tags has-addons">
@@ -37,13 +19,13 @@
 @endsection
 
 @section('data-table')
-    <table class="table is-striped is-hoverable is-fullwidth">
+    <table id="password_reset" class="table is-striped is-hoverable is-fullwidth">
         <thead>
             <th>S/N</th>
-            <th>email</th>
-            <th>token</th>
-            <th>created_at</th>
-            <th colspan="2" style="width:5%;">&nbsp;</th>
+            <th>EMAIL</th>
+            <th>TOKEN</th>
+            <th style="width:5%;">&nbsp;</th>
+            <th style="width:5%;">&nbsp;</th>
         </thead>
         <tbody>
         <?php $i = 0; ?>
@@ -53,7 +35,6 @@
                 <td>{{ $i }}</td>
                 <td>{{ $password_reset->email }}</td>
                 <td>{{ $password_reset->token }}</td>
-                <td>{{ $password_reset->created_at }}</td>
                 <td>
                     <a href="{{ URL::to('password_resets/'.$password_reset->id.'/edit') }}" title="Edit">
                         <i class="fas fa-edit"></i>
@@ -68,4 +49,17 @@
         @endforeach
         </tbody>
     </table>
+@endsection
+@section('script')
+    <script>
+        $(document).ready(function(){
+            var table = $("#password_reset").DataTable({
+                buttons:[
+                    'copy', 'excel', 'pdf'
+                ]
+            });
+            table.buttons().container()
+                .appendTo( $('.downloads') );
+        });
+    </script>
 @endsection

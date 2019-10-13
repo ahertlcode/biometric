@@ -1,30 +1,12 @@
 @extends('layouts.table')
-@section('search')
-    <div class="field">
-        <div class="control has-icons-right">
-            <input type="text" class="input">
-            <span class="icon is-right">
-                <i class="fa fa-search"></i>
-            </span>
-        </div>
-    </div>
-@endsection
-
-@section('download-icons')
-    <a href="#" title="export to pdf">
-        <i class="fas fa-file-pdf fa-2x"></i>
-    </a>&nbsp;&nbsp;
-    <a href="#" title="export to excel">
-        <i class="fas fa-file-excel fa-2x"></i>
-    </a>&nbsp;&nbsp;
-    <a href="#" title="export to csv">
-        <i class="fas fa-file-alt fa-2x"></i>
-    </a>&nbsp;&nbsp;
-    <a href="#" title="upload file">
+@section('upload')
+    <a href="{{ URL::to('user_types/getFile') }}" title="upload file">
         <i class="fas fa-file-upload fa-2x"></i>
     </a>
 @endsection
-
+@section('download-icons')
+    <div class="downloads"></div>
+@endsection
 @section('add-new')
     <div class="control">
         <div class="tags has-addons">
@@ -37,13 +19,12 @@
 @endsection
 
 @section('data-table')
-    <table class="table is-striped is-hoverable is-fullwidth">
+    <table id="user_type" class="table is-striped is-hoverable is-fullwidth">
         <thead>
             <th>S/N</th>
-            <th>user_type</th>
-            <th>created_at</th>
-            <th>updated_at</th>
-            <th colspan="2" style="width:5%;">&nbsp;</th>
+            <th>USER TYPE </th>
+            <th style="width:5%;">&nbsp;</th>
+            <th style="width:5%;">&nbsp;</th>
         </thead>
         <tbody>
         <?php $i = 0; ?>
@@ -52,8 +33,6 @@
             <tr>
                 <td>{{ $i }}</td>
                 <td>{{ $user_type->user_type }}</td>
-                <td>{{ $user_type->created_at }}</td>
-                <td>{{ $user_type->updated_at }}</td>
                 <td>
                     <a href="{{ URL::to('user_types/'.$user_type->id.'/edit') }}" title="Edit">
                         <i class="fas fa-edit"></i>
@@ -68,4 +47,17 @@
         @endforeach
         </tbody>
     </table>
+@endsection
+@section('script')
+    <script>
+        $(document).ready(function(){
+            var table = $("#user_type").DataTable({
+                buttons:[
+                    'copy', 'excel', 'pdf'
+                ]
+            });
+            table.buttons().container()
+                .appendTo( $('.downloads') );
+        });
+    </script>
 @endsection

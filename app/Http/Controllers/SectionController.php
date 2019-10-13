@@ -2,8 +2,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Auth;
+use Illuminate\Support\Facades\Input;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Section;
+use App\Imports\SectionsImport;
+use Auth;
 
 class SectionController extends Controller
 {
@@ -34,7 +37,7 @@ class SectionController extends Controller
     }
 
     public function create(){
-        return view('sections.create');
+            return view('sections.create');
     }
 
     /**
@@ -52,7 +55,8 @@ class SectionController extends Controller
             ], 201);
         }else{
             $info = "Section successfully created";
-            return view('sections.create',compact('info'));
+            $sections = Section::all();
+            return view('sections.section',compact('info','sections'));
         }
     }
 
@@ -89,7 +93,8 @@ class SectionController extends Controller
             return response()->json(['info' => 'Section successfully updated.'], 200);
         }else{
             $info = "Section successfully updated.";
-            return view('sections.edit', compact('info'));
+            $sections = Section::all();
+            return view('sections.section',compact('info','sections'));
         }
     }
 
@@ -108,6 +113,17 @@ class SectionController extends Controller
             $info = "Section  deleted successfully.";
             return view('sections.section', compact('info'));
         }
+    }
+
+    public function getFile()
+    {
+        return view('sections.upload');
+    }
+
+    public function upload(Request $request)
+    {
+        Excel::import(new SectionsImport, request()->file('section_file'));
+        return redirect('sections.section');
     }
 
 

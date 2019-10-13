@@ -10,10 +10,10 @@
     <h1 class="title is-3">ADD SECTION</h1>
     
     <div class="field">
-        <label class="label">Section Name </label>
+        <label class="label">Section</label>
         <div class="control">
-            <input id="section_name" name="section_name" class="input @error('section_name') is-invalid @enderror" value="{{ old('section_name') }}" type="text"  required>
-            @error('section_name')
+            <input id="section" name="section" class="input @error('section') is-invalid @enderror" value="{{ old('section',sections->section) }}" type="text"  required>
+            @error('section')
             <span class="notification is-danger">
                 <strong>{{ $message }}</strong>
             </span>

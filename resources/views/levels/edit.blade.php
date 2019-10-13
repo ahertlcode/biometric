@@ -12,7 +12,7 @@
     <div class="field">
         <label class="label">Level</label>
         <div class="control">
-            <input id="level" name="level" class="input @error('level') is-invalid @enderror" value="{{ old('level') }}" type="text"  required>
+            <input id="level" name="level" class="input @error('level') is-invalid @enderror" value="{{ old('level',levels->level) }}" type="text"  required>
             @error('level')
             <span class="notification is-danger">
                 <strong>{{ $message }}</strong>

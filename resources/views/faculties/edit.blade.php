@@ -10,10 +10,10 @@
     <h1 class="title is-3">EDIT FACULTY</h1>
     
     <div class="field">
-        <label class="label">Faculty Name </label>
+        <label class="label">Faculty</label>
         <div class="control">
-            <input id="faculty_name" name="faculty_name" class="input @error('faculty_name') is-invalid @enderror" value="{{ old('faculty_name') }}" type="text"  required>
-            @error('faculty_name')
+            <input id="faculty" name="faculty" class="input @error('faculty') is-invalid @enderror" value="{{ old('faculty',faculties->faculty) }}" type="text"  required>
+            @error('faculty')
             <span class="notification is-danger">
                 <strong>{{ $message }}</strong>
             </span>

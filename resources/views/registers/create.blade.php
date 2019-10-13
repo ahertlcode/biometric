@@ -12,7 +12,7 @@
     <div class="field">
         <label class="label">Course</label>
         <div class="select" style="width:100%;">
-            <select class="input @error('course_id') is-invalid @enderror" >
+            <select id="course_id" name="course_id" class="input @error('course_id') is-invalid @enderror" >
                 <option value="-1">Select Course </option>
                 @foreach($courses as $course)
                 <option value="{{$course->id}}">{{$course->course}}</option>

@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class PasswordReset extends Model
 {
     /**
+     * Mass assignable attributes.
      *
-     * Mass assignable columns
-     *
+     * @var array
      */
     protected $fillable = ['email','token'];
 

@@ -10,9 +10,21 @@
     <h1 class="title is-3">EDIT LECTURER</h1>
     
     <div class="field">
+        <label class="label">User</label>
+        <div class="select" style="width:100%;">
+            <select id="user_id" name="user_id" class="input @error('user_id') is-invalid @enderror" >
+                <option value="-1">Select User </option>
+                @foreach($users as $user)
+                <option value="{{$user->id}}">{{$user->user}}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+    
+    <div class="field">
         <label class="label">Staff Number </label>
         <div class="control">
-            <input id="staff_number" name="staff_number" class="input @error('staff_number') is-invalid @enderror" value="{{ old('staff_number') }}" type="text"  required>
+            <input id="staff_number" name="staff_number" class="input @error('staff_number') is-invalid @enderror" value="{{ old('staff_number',lecturers->staff_number) }}" type="text"  required>
             @error('staff_number')
             <span class="notification is-danger">
                 <strong>{{ $message }}</strong>
@@ -23,7 +35,7 @@
     <div class="field">
         <label class="label">Name</label>
         <div class="control">
-            <input id="name" name="name" class="input @error('name') is-invalid @enderror" value="{{ old('name') }}" type="text"  required>
+            <input id="name" name="name" class="input @error('name') is-invalid @enderror" value="{{ old('name',lecturers->name) }}" type="text"  required>
             @error('name')
             <span class="notification is-danger">
                 <strong>{{ $message }}</strong>
@@ -34,7 +46,7 @@
     <div class="field">
         <label class="label">Department</label>
         <div class="select" style="width:100%;">
-            <select class="input @error('department_id') is-invalid @enderror" >
+            <select id="department_id" name="department_id" class="input @error('department_id') is-invalid @enderror" >
                 <option value="-1">Select Department </option>
                 @foreach($departments as $department)
                 <option value="{{$department->id}}">{{$department->department}}</option>

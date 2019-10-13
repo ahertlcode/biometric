@@ -1,30 +1,12 @@
 @extends('layouts.table')
-@section('search')
-    <div class="field">
-        <div class="control has-icons-right">
-            <input type="text" class="input">
-            <span class="icon is-right">
-                <i class="fa fa-search"></i>
-            </span>
-        </div>
-    </div>
-@endsection
-
-@section('download-icons')
-    <a href="#" title="export to pdf">
-        <i class="fas fa-file-pdf fa-2x"></i>
-    </a>&nbsp;&nbsp;
-    <a href="#" title="export to excel">
-        <i class="fas fa-file-excel fa-2x"></i>
-    </a>&nbsp;&nbsp;
-    <a href="#" title="export to csv">
-        <i class="fas fa-file-alt fa-2x"></i>
-    </a>&nbsp;&nbsp;
-    <a href="#" title="upload file">
+@section('upload')
+    <a href="{{ URL::to('registers/getFile') }}" title="upload file">
         <i class="fas fa-file-upload fa-2x"></i>
     </a>
 @endsection
-
+@section('download-icons')
+    <div class="downloads"></div>
+@endsection
 @section('add-new')
     <div class="control">
         <div class="tags has-addons">
@@ -37,13 +19,13 @@
 @endsection
 
 @section('data-table')
-    <table class="table is-striped is-hoverable is-fullwidth">
+    <table id="register" class="table is-striped is-hoverable is-fullwidth">
         <thead>
             <th>S/N</th>
-            <th>course_id</th>
-            <th>created_at</th>
-            <th>updated_at</th>
-            <th colspan="2" style="width:5%;">&nbsp;</th>
+            <th>USER ID </th>
+            <th>COURSE ID </th>
+            <th style="width:5%;">&nbsp;</th>
+            <th style="width:5%;">&nbsp;</th>
         </thead>
         <tbody>
         <?php $i = 0; ?>
@@ -51,9 +33,8 @@
             <?php $i += 1; ?>
             <tr>
                 <td>{{ $i }}</td>
+                <td>{{ $register->user_id }}</td>
                 <td>{{ $register->course_id }}</td>
-                <td>{{ $register->created_at }}</td>
-                <td>{{ $register->updated_at }}</td>
                 <td>
                     <a href="{{ URL::to('registers/'.$register->id.'/edit') }}" title="Edit">
                         <i class="fas fa-edit"></i>
@@ -68,4 +49,17 @@
         @endforeach
         </tbody>
     </table>
+@endsection
+@section('script')
+    <script>
+        $(document).ready(function(){
+            var table = $("#register").DataTable({
+                buttons:[
+                    'copy', 'excel', 'pdf'
+                ]
+            });
+            table.buttons().container()
+                .appendTo( $('.downloads') );
+        });
+    </script>
 @endsection

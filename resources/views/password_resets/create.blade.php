@@ -12,7 +12,7 @@
     <div class="field">
         <label class="label">Email</label>
         <div class="select" style="width:100%;">
-            <select class="input @error('email') is-invalid @enderror" >
+            <select id="email" name="email" class="input @error('email') is-invalid @enderror" >
                 <option value="-1">Select Email</option>
                 @foreach($emails as $email)
                 <option value="{{$email->id}}">{{$email->email}}</option>
@@ -24,7 +24,7 @@
     <div class="field">
         <label class="label">Token</label>
         <div class="control">
-            <input id="token" name="token" class="input @error('token') is-invalid @enderror" value="{{ old('token') }}" type="text"  required>
+            <input id="token" name="token" class="input @error('token') is-invalid @enderror" value="{{ old('token',password_resets->token) }}" type="text"  required>
             @error('token')
             <span class="notification is-danger">
                 <strong>{{ $message }}</strong>

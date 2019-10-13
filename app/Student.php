@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Student extends Model
 {
     /**
+     * Mass assignable attributes.
      *
-     * Mass assignable columns
-     *
+     * @var array
      */
     protected $fillable = ['user_id','matric_number','first_name','middle_name','last_name','level_id','department_id'];
 

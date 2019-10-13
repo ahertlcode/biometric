@@ -2,8 +2,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Auth;
+use Illuminate\Support\Facades\Input;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Department;
+use App\Imports\DepartmentsImport;
+use Auth;
 
 class DepartmentController extends Controller
 {
@@ -34,7 +37,8 @@ class DepartmentController extends Controller
     }
 
     public function create(){
-            return view('departments.create');
+        $faculties = \App\Faculty::all();
+        return view('departments.create',compact('faculties'));
     }
 
     /**
@@ -52,7 +56,8 @@ class DepartmentController extends Controller
             ], 201);
         }else{
             $info = "Department successfully created";
-            return view('departments.create',compact('info'));
+            $departments = Department::all();
+            return view('departments.department',compact('info','departments'));
         }
     }
 
@@ -89,7 +94,8 @@ class DepartmentController extends Controller
             return response()->json(['info' => 'Department successfully updated.'], 200);
         }else{
             $info = "Department successfully updated.";
-            return view('departments.edit', compact('info'));
+            $departments = Department::all();
+            return view('departments.department',compact('info','departments'));
         }
     }
 
@@ -108,6 +114,17 @@ class DepartmentController extends Controller
             $info = "Department  deleted successfully.";
             return view('departments.department', compact('info'));
         }
+    }
+
+    public function getFile()
+    {
+        return view('departments.upload');
+    }
+
+    public function upload(Request $request)
+    {
+        Excel::import(new DepartmentsImport, request()->file('department_file'));
+        return redirect('departments.department');
     }
 
 
