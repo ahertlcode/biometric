@@ -14,6 +14,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('logout', function(){
+    Auth::logout();
+    return redirect('/');
+});
+
 Auth::routes(['verify'=>true]);
 
 Route::get('/home', 'HomeController@index')->name('home');

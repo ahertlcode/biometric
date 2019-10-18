@@ -10,10 +10,10 @@
 @section('add-new')
     <div class="control">
         <div class="tags has-addons">
-            <span class="tag">
-                Add New
+            <span class="tag is-success">
+                +
             </span>
-            <a href="{{ route('user_types.create') }}" class="tag is-success">+</a>
+            <a href="{{ route('user_types.create') }}" class="tag">Add New</a>
         </div>
     </div>
 @endsection

@@ -12,7 +12,7 @@
     <div class="field">
         <label class="label">Staff Number </label>
         <div class="control">
-            <input id="staff_number" name="staff_number" class="input @error('staff_number') is-invalid @enderror" value="{{ old('staff_number',admins->staff_number) }}" type="text" >
+            <input id="staff_number" name="staff_number" class="input @error('staff_number') is-invalid @enderror" value="{{ old('staff_number', $admin->staff_number ?? '') }}" type="text" >
             @error('staff_number')
             <span class="notification is-danger">
                 <strong>{{ $message }}</strong>
@@ -23,7 +23,7 @@
     <div class="field">
         <label class="label">Name</label>
         <div class="control">
-            <input id="name" name="name" class="input @error('name') is-invalid @enderror" value="{{ old('name',admins->name) }}" type="text"  required>
+            <input id="name" name="name" class="input @error('name') is-invalid @enderror" value="{{ old('name', $admin->name ?? '') }}" type="text"  required>
             @error('name')
             <span class="notification is-danger">
                 <strong>{{ $message }}</strong>
@@ -34,7 +34,7 @@
     <div class="field">
         <label class="label">Designation</label>
         <div class="control">
-            <input id="designation" name="designation" class="input @error('designation') is-invalid @enderror" value="{{ old('designation',admins->designation) }}" type="text" >
+            <input id="designation" name="designation" class="input @error('designation') is-invalid @enderror" value="{{ old('designation', $admin->designation ?? '') }}" type="text" >
             @error('designation')
             <span class="notification is-danger">
                 <strong>{{ $message }}</strong>

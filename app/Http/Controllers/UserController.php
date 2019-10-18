@@ -77,7 +77,8 @@ class UserController extends Controller
     }
 
     public function edit(User $user){
-        return view('users.edit',compact('user'));
+        $user_types = \App\UserType::all();
+    return view('users.edit',compact('user_types'));
     }
 
     /**

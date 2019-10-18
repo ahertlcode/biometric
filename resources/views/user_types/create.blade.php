@@ -12,7 +12,7 @@
     <div class="field">
         <label class="label">User Type </label>
         <div class="control">
-            <input id="user_type" name="user_type" class="input @error('user_type') is-invalid @enderror" value="{{ old('user_type',user_types->user_type) }}" type="text"  required>
+            <input id="user_type" name="user_type" class="input @error('user_type') is-invalid @enderror" value="{{ old('user_type', $user_type->user_type ?? '') }}" type="text"  required>
             @error('user_type')
             <span class="notification is-danger">
                 <strong>{{ $message }}</strong>

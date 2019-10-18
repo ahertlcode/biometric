@@ -12,7 +12,7 @@
     <div class="field">
         <label class="label">Matric Number </label>
         <div class="control">
-            <input id="matric_number" name="matric_number" class="input @error('matric_number') is-invalid @enderror" value="{{ old('matric_number',students->matric_number) }}" type="text"  required>
+            <input id="matric_number" name="matric_number" class="input @error('matric_number') is-invalid @enderror" value="{{ old('matric_number', $student->matric_number ?? '') }}" type="text"  required>
             @error('matric_number')
             <span class="notification is-danger">
                 <strong>{{ $message }}</strong>
@@ -23,7 +23,7 @@
     <div class="field">
         <label class="label">First Name </label>
         <div class="control">
-            <input id="first_name" name="first_name" class="input @error('first_name') is-invalid @enderror" value="{{ old('first_name',students->first_name) }}" type="text"  required>
+            <input id="first_name" name="first_name" class="input @error('first_name') is-invalid @enderror" value="{{ old('first_name', $student->first_name ?? '') }}" type="text"  required>
             @error('first_name')
             <span class="notification is-danger">
                 <strong>{{ $message }}</strong>
@@ -34,7 +34,7 @@
     <div class="field">
         <label class="label">Middle Name </label>
         <div class="control">
-            <input id="middle_name" name="middle_name" class="input @error('middle_name') is-invalid @enderror" value="{{ old('middle_name',students->middle_name) }}" type="text" >
+            <input id="middle_name" name="middle_name" class="input @error('middle_name') is-invalid @enderror" value="{{ old('middle_name', $student->middle_name ?? '') }}" type="text" >
             @error('middle_name')
             <span class="notification is-danger">
                 <strong>{{ $message }}</strong>
@@ -45,7 +45,7 @@
     <div class="field">
         <label class="label">Last Name </label>
         <div class="control">
-            <input id="last_name" name="last_name" class="input @error('last_name') is-invalid @enderror" value="{{ old('last_name',students->last_name) }}" type="text"  required>
+            <input id="last_name" name="last_name" class="input @error('last_name') is-invalid @enderror" value="{{ old('last_name', $student->last_name ?? '') }}" type="text"  required>
             @error('last_name')
             <span class="notification is-danger">
                 <strong>{{ $message }}</strong>

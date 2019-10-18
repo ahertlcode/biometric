@@ -78,7 +78,9 @@ class RegisterController extends Controller
     }
 
     public function edit(Register $register){
-        return view('registers.edit',compact('register'));
+        $users = \App\User::all();
+    $courses = \App\Course::all();
+    return view('registers.edit',compact('users','courses'));
     }
 
     /**

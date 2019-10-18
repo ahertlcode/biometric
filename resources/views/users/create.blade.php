@@ -12,7 +12,7 @@
     <div class="field">
         <label class="label">User Name </label>
         <div class="control">
-            <input id="user_name" name="user_name" class="input @error('user_name') is-invalid @enderror" value="{{ old('user_name',users->user_name) }}" type="text"  required>
+            <input id="user_name" name="user_name" class="input @error('user_name') is-invalid @enderror" value="{{ old('user_name', $user->user_name ?? '') }}" type="text"  required>
             @error('user_name')
             <span class="notification is-danger">
                 <strong>{{ $message }}</strong>
@@ -35,7 +35,7 @@
     <div class="field">
         <label class="label">Email</label>
         <div class="control">
-            <input id="email" name="email" class="input @error('email') is-invalid @enderror" value="{{ old('email',users->email) }}" type="text"  required>
+            <input id="email" name="email" class="input @error('email') is-invalid @enderror" value="{{ old('email', $user->email ?? '') }}" type="text"  required>
             @error('email')
             <span class="notification is-danger">
                 <strong>{{ $message }}</strong>
@@ -46,7 +46,7 @@
     <div class="field">
         <label class="label">Phone</label>
         <div class="control">
-            <input id="phone" name="phone" class="input @error('phone') is-invalid @enderror" value="{{ old('phone',users->phone) }}" type="text"  required>
+            <input id="phone" name="phone" class="input @error('phone') is-invalid @enderror" value="{{ old('phone', $user->phone ?? '') }}" type="text"  required>
             @error('phone')
             <span class="notification is-danger">
                 <strong>{{ $message }}</strong>
@@ -57,7 +57,7 @@
     <div class="field">
         <label class="label">Password</label>
         <div class="control">
-            <input id="password" name="password" class="input @error('password') is-invalid @enderror" value="{{ old('password',users->password) }}" type="password"  required>
+            <input id="password" name="password" class="input @error('password') is-invalid @enderror" value="{{ old('password', $user->password ?? '') }}" type="password"  required>
             @error('password')
             <span class="notification is-danger">
                 <strong>{{ $message }}</strong>
@@ -68,7 +68,7 @@
     <div class="field">
         <label class="label">Password Confirmation </label>
         <div class="control">
-            <input id="password_confirmation" name="password_confirmation" class="input @error('password_confirmation') is-invalid @enderror" value="{{ old('password_confirmation',users->password_confirmation) }}" type="password"  required>
+            <input id="password_confirmation" name="password_confirmation" class="input @error('password_confirmation') is-invalid @enderror" value="{{ old('password_confirmation', $user->password_confirmation ?? '') }}" type="password"  required>
             @error('password_confirmation')
             <span class="notification is-danger">
                 <strong>{{ $message }}</strong>

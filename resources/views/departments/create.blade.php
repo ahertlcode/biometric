@@ -12,7 +12,7 @@
     <div class="field">
         <label class="label">Department</label>
         <div class="control">
-            <input id="department" name="department" class="input @error('department') is-invalid @enderror" value="{{ old('department',departments->department) }}" type="text"  required>
+            <input id="department" name="department" class="input @error('department') is-invalid @enderror" value="{{ old('department', $department->department ?? '') }}" type="text"  required>
             @error('department')
             <span class="notification is-danger">
                 <strong>{{ $message }}</strong>

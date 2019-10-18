@@ -38,7 +38,7 @@ class AdminController extends Controller
 
     public function create(){
         $users = \App\User::all();
-    $sections = \App\Section::all();
+        $sections = \App\Section::all();
         return view('admins.create',compact('users','sections'));
     }
 
@@ -78,7 +78,9 @@ class AdminController extends Controller
     }
 
     public function edit(Admin $admin){
-        return view('admins.edit',compact('admin'));
+        $users = \App\User::all();
+    $sections = \App\Section::all();
+    return view('admins.edit',compact('users','sections'));
     }
 
     /**

@@ -79,7 +79,10 @@ class StudentController extends Controller
     }
 
     public function edit(Student $student){
-        return view('students.edit',compact('student'));
+        $users = \App\User::all();
+    $levels = \App\Level::all();
+    $departments = \App\Department::all();
+    return view('students.edit',compact('users','levels','departments'));
     }
 
     /**

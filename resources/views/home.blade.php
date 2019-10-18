@@ -17,14 +17,6 @@
                         </span>
                     </div>
                 </div>
-                <div class="card-footer">
-                    <div class="footer is-left">
-                        <i class="fa fa-copy"></i>
-                    </div>
-                    <div class="footer is-right">
-                        <i class="fa fa-cogs"></i>
-                    </div>
-                </div>
             </div>
         </div>
     </div>

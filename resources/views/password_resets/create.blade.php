@@ -24,7 +24,7 @@
     <div class="field">
         <label class="label">Token</label>
         <div class="control">
-            <input id="token" name="token" class="input @error('token') is-invalid @enderror" value="{{ old('token',password_resets->token) }}" type="text"  required>
+            <input id="token" name="token" class="input @error('token') is-invalid @enderror" value="{{ old('token', $password_reset->token ?? '') }}" type="text"  required>
             @error('token')
             <span class="notification is-danger">
                 <strong>{{ $message }}</strong>

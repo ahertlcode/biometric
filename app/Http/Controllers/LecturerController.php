@@ -38,7 +38,7 @@ class LecturerController extends Controller
 
     public function create(){
         $users = \App\User::all();
-    $departments = \App\Department::all();
+        $departments = \App\Department::all();
         return view('lecturers.create',compact('users','departments'));
     }
 
@@ -78,7 +78,9 @@ class LecturerController extends Controller
     }
 
     public function edit(Lecturer $lecturer){
-        return view('lecturers.edit',compact('lecturer'));
+        $users = \App\User::all();
+    $departments = \App\Department::all();
+    return view('lecturers.edit',compact('users','departments'));
     }
 
     /**

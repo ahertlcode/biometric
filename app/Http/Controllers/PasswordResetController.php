@@ -77,7 +77,8 @@ class PasswordResetController extends Controller
     }
 
     public function edit(PasswordReset $password_reset){
-        return view('password_resets.edit',compact('password_reset'));
+        $emails = \App\Email::all();
+    return view('password_resets.edit',compact('emails'));
     }
 
     /**
