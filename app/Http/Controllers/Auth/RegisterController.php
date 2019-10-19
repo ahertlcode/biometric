@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\EmailConfirmation;
+use App\Mail\ConfirmationEmail;
 
 class RegisterController extends Controller
 {
