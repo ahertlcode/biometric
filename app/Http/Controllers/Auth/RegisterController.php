@@ -85,7 +85,7 @@ class RegisterController extends Controller
                 "info" => "E-mail verification code sent to $user->email",
             ], 201);
         }else{
-            return view('register')->with('info', "E-mail verification code sent to $user->email");
+            return view('auth.register')->with('info', "E-mail verification code sent to $user->email");
         }
     }
 
@@ -94,7 +94,7 @@ class RegisterController extends Controller
                 ->where('remember_token', $request->verification_code)
                 ->first();
         if($user){
-            $user->email_validated_at = now();
+            $user->email_verified_at = now();
             $user->status = '1';
             $user->save();
             return response()->json([

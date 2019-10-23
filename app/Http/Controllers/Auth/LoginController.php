@@ -46,6 +46,7 @@ class LoginController extends Controller
     }
 
     public function login(Request $request){
+        //return json_decode($request);
         $this->validateLogin($request);
         if($this->attemptLogin($request)){
             $user = $this->guard()->user();
@@ -61,6 +62,15 @@ class LoginController extends Controller
                 $info = "Login Successful.";
                 $data = $user;
                 return view('/home', compact('info','data'));
+            }
+        }else{
+            if($request->wantsJson()){
+                return response()->json([
+                    'info' => 'User validation failed.'
+                ], 422);
+            }else{
+                $info = 'User validation failed.';
+                return view('auth.login', compact('info'));
             }
         }
     }
