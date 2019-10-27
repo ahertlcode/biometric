@@ -38,8 +38,8 @@ class StudentController extends Controller
 
     public function create(){
         $users = \App\User::all();
-    $levels = \App\Level::all();
-    $departments = \App\Department::all();
+        $levels = \App\Level::all();
+        $departments = \App\Department::all();
         return view('students.create',compact('users','levels','departments'));
     }
 

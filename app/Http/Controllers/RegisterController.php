@@ -27,7 +27,12 @@ class RegisterController extends Controller
      */
     public function index(Request $request)
     {
-        $registers = Register::all();
+        $registers = array();
+        foreach(Register::all() as $register){
+            $register['user'] = $register->user_id;//$register->user()["id"];
+            $register['course'] = $register->course()["course"];
+            $registers[] = $register;
+        }
         if($request->wantsJson()){
             return $registers;
 

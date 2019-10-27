@@ -46,7 +46,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function user_type()
     {
-        return $this->belongsTo('App\UserType', 'user_type_id')->get();
+        return $this->belongsTo('App\UserType', 'user_type_id')->first();
     }
 
 

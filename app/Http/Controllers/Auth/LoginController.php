@@ -53,6 +53,7 @@ class LoginController extends Controller
             $user->generateToken();
             ($user) ? $user->online = 1 : '';
             $user->save();
+            $user['user_type'] = $user->user_type()["user_type"];
             if($request->wantsJson()){
                 return response()->json([
                     'info' => "Login successful.",

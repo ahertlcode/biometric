@@ -1,13 +1,16 @@
 @extends('layouts.table')
 @section('upload')
+    <!--
     <a href="{{ URL::to('registers/getFile') }}" title="upload file">
         <i class="fas fa-file-upload fa-2x"></i>
     </a>
+    -->
 @endsection
 @section('download-icons')
     <div class="downloads"></div>
 @endsection
 @section('add-new')
+    <!--
     <div class="control">
         <div class="tags has-addons">
             <span class="tag is-success">
@@ -15,15 +18,16 @@
             </span>
             <a href="{{ route('registers.create') }}" class="tag">Add New</a>
         </div>
-    </div>
+    </div>-->
 @endsection
 
 @section('data-table')
     <table id="register" class="table is-striped is-hoverable is-fullwidth">
         <thead>
             <th>S/N</th>
-            <th>USER ID </th>
-            <th>COURSE ID </th>
+            <th>NAME </th>
+            <th>COURSE </th>
+            <th>DATE</th>
             <th style="width:5%;">&nbsp;</th>
             <th style="width:5%;">&nbsp;</th>
         </thead>
@@ -34,7 +38,8 @@
             <tr>
                 <td>{{ $i }}</td>
                 <td>{{ $register->user_id }}</td>
-                <td>{{ $register->course_id }}</td>
+                <td>{{ $register->course }}</td>
+                <td>{{ $register->created_at }}</td>
                 <td>
                     <a href="{{ URL::to('registers/'.$register->id.'/edit') }}" title="Edit">
                         <i class="fas fa-edit"></i>

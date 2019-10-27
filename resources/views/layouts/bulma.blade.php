@@ -122,14 +122,13 @@
                 </p>
                 <ul class="menu-list is-marginless is-paddingless">
                     <a class="menu-item is-marginless is-paddingless" href="{{ route('password_resets.index') }}">Password Reset</a>
-                </ul>
+                </ul>-->
                 <p class="menu-label">
                     register
                 </p>
                 <ul class="menu-list is-marginless is-paddingless">
                     <a class="menu-item is-marginless is-paddingless" href="{{ route('registers.index') }}">Register</a>
                 </ul>
-                -->
                 <p class="menu-label">
                     section
                 </p>
@@ -148,14 +147,12 @@
                 <ul class="menu-list is-marginless is-paddingless">
                     <a class="menu-item is-marginless is-paddingless" href="{{ route('user_types.index') }}">User Type</a>
                 </ul>
-                <!--
                 <p class="menu-label">
                     user
                 </p>
                 <ul class="menu-list is-marginless is-paddingless">
                     <a class="menu-item is-marginless is-paddingless" href="{{ route('users.index') }}">User</a>
                 </ul>
-                -->
                 @endauth
             </aside>
                     </div>

@@ -27,7 +27,7 @@ class Register extends Model
      */
     public function user()
     {
-        return $this->belongsTo('App\User', 'user_id')->get();
+        return $this->belongsTo('App\User', 'user_id')->first();
     }
 
     /**
@@ -37,7 +37,7 @@ class Register extends Model
      */
     public function course()
     {
-        return $this->belongsTo('App\Course', 'course_id')->get();
+        return $this->belongsTo('App\Course', 'course_id')->first();
     }
 
 

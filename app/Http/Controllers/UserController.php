@@ -27,7 +27,18 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::all();
+        /**
+         * $users = array();
+         * foreach(User::all() as $user){
+         * $user['user_type'] = $user->user_type()[0]->user_type;
+         *  $users[] = $user;
+         * }
+         */
+        $users = array();
+        foreach(User::all() as $user){
+            $user['user_type'] = $user->user_type()["user_type"];
+            $users[] = $user;
+        }
         if($request->wantsJson()){
             return $users;
 
