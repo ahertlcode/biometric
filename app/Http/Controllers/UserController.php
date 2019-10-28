@@ -99,7 +99,7 @@ class UserController extends Controller
 
         if(!empty($extra)){
             $extra['department'] = $extra[0]->department();
-            $extra['faculty'] = $extra[0]->department()[0]->faculty();
+            if($extra['department'])$extra['faculty'] = $extra[0]->department()[0]->faculty();
             $user['details'] = $extra;
         }
 
