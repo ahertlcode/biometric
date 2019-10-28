@@ -80,6 +80,26 @@ class UserController extends Controller
      */
     public function show(Request $request, User $user)
     {
+        $attendance = array();
+
+        $user_type = \App\UserType::where('id',
+            $user->user_type_id
+        )->first()->user_type;
+
+        $extra = \App\ucwords($user_type)::where('id', $user->id)->get();
+
+        if($user_type == "student"){
+            $attendance = \App\Register::where('user_id', $user->id)->get();
+        }
+
+        if(!empty($extra)){
+            $user['details'] = $extra;
+        }
+
+        if(!empty($attendance)){
+            $user['attendance'] = $attendance;
+        }
+
         if($request->wantsJson()){
             return $user;
         }else{
