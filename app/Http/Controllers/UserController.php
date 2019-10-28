@@ -86,10 +86,14 @@ class UserController extends Controller
             $user->user_type_id
         )->first()->user_type;
 
-        $extra = \App\ucwords($user_type)::where('id', $user->id)->get();
+        $model = "\App\\".ucwords($user_type);
+        $extra = $model::where('user_id', $user->id)->get();
 
         if($user_type == "student"){
-            $attendance = \App\Register::where('user_id', $user->id)->get();
+            $attendance = \App\Register::where('user_id', $user->id)
+            ->groupBy('course_id')
+            ->selectRaw('count(*) as total, course_id')
+            ->get();
         }
 
         if(!empty($extra)){
@@ -97,7 +101,13 @@ class UserController extends Controller
         }
 
         if(!empty($attendance)){
-            $user['attendance'] = $attendance;
+            $attnds = array();
+            foreach($attendance as $attend)
+            {
+                $attend['course'] = $attend->course();
+                $attnds[] = $attend;
+            }
+            $user['attendance'] = $attnds;
         }
 
         if($request->wantsJson()){
