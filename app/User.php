@@ -21,7 +21,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * Hidden columns not to be returned in query result.
      *
      */
-    protected $hidden = ['id','created_at','updated_at','status'];
+    protected $hidden = ['created_at','updated_at','status'];
 
     public function generateToken()
     {

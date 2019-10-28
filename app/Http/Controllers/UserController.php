@@ -90,6 +90,7 @@ class UserController extends Controller
         $extra = $model::where('user_id', $user->id)->get();
 
         if($user_type == "student"){
+            $extra['level'] = $extra[0]->level();
             $attendance = \App\Register::where('user_id', $user->id)
             ->groupBy('course_id')
             ->selectRaw('count(*) as total, course_id')
@@ -97,6 +98,8 @@ class UserController extends Controller
         }
 
         if(!empty($extra)){
+            $extra['department'] = $extra[0]->department();
+            $extra['faculty'] = $extra[0]->department()[0]->faculty();
             $user['details'] = $extra;
         }
 
