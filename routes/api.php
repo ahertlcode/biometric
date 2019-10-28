@@ -107,3 +107,10 @@ Route::apiResource('students', 'StudentController');
  * GET, POST, PUT/PATCH, DELETE
  */
 Route::apiResource('user_types', 'UserTypeController');
+
+/**
+ * API endpoints for users
+ * responding to all API calls
+ * GET, POST, PUT/PATCH, DELETE
+ */
+Route::apiResource('users', 'UserController');
