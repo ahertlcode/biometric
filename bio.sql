@@ -60,12 +60,12 @@ DROP TABLE IF EXISTS `courses`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `courses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `course_code` varchar(10) NOT NULL,
+  `course` varchar(10) NOT NULL,
   `course_title` varchar(200) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -74,6 +74,7 @@ CREATE TABLE `courses` (
 
 LOCK TABLES `courses` WRITE;
 /*!40000 ALTER TABLE `courses` DISABLE KEYS */;
+INSERT INTO `courses` VALUES (1,'CSC 201','Introduction to Computer Programming','2019-10-11 12:41:57','2019-10-11 12:41:57'),(2,'BED 204','Business Economics','2019-10-11 13:23:54','2019-10-11 13:23:54'),(3,'CSC 303','Logic and Gate','2019-10-11 13:24:17','2019-10-11 13:24:17');
 /*!40000 ALTER TABLE `courses` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -86,15 +87,15 @@ DROP TABLE IF EXISTS `departments`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `departments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `department_name` varchar(25) NOT NULL,
+  `department` varchar(25) NOT NULL,
   `faculty_id` int(11) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `department_name` (`department_name`),
+  UNIQUE KEY `department_name` (`department`),
   KEY `faculty_id` (`faculty_id`),
   CONSTRAINT `departments_ibfk_1` FOREIGN KEY (`faculty_id`) REFERENCES `faculties` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -103,6 +104,7 @@ CREATE TABLE `departments` (
 
 LOCK TABLES `departments` WRITE;
 /*!40000 ALTER TABLE `departments` DISABLE KEYS */;
+INSERT INTO `departments` VALUES (1,'Computer Education',2,'2019-10-11 12:41:25','2019-10-11 12:41:25'),(2,'Mathematics Education',2,'2019-10-11 13:25:25','2019-10-11 13:25:25');
 /*!40000 ALTER TABLE `departments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -115,12 +117,12 @@ DROP TABLE IF EXISTS `faculties`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `faculties` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `faculty_name` varchar(25) NOT NULL,
+  `faculty` varchar(25) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `faculty_name` (`faculty_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  UNIQUE KEY `faculty_name` (`faculty`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -129,6 +131,7 @@ CREATE TABLE `faculties` (
 
 LOCK TABLES `faculties` WRITE;
 /*!40000 ALTER TABLE `faculties` DISABLE KEYS */;
+INSERT INTO `faculties` VALUES (1,'Engineering','2019-10-11 12:38:49','2019-10-11 12:38:49'),(2,'Education','2019-10-11 12:39:00','2019-10-11 12:39:00'),(3,'Science','2019-10-11 12:39:16','2019-10-11 12:39:16'),(4,'Law','2019-10-11 13:25:52','2019-10-11 13:25:52'),(5,'Medical Science','2019-10-11 13:26:30','2019-10-11 13:26:30');
 /*!40000 ALTER TABLE `faculties` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -153,7 +156,7 @@ CREATE TABLE `lecturers` (
   KEY `department_id` (`department_id`),
   CONSTRAINT `lecturers_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   CONSTRAINT `lecturers_ibfk_2` FOREIGN KEY (`department_id`) REFERENCES `departments` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -162,6 +165,7 @@ CREATE TABLE `lecturers` (
 
 LOCK TABLES `lecturers` WRITE;
 /*!40000 ALTER TABLE `lecturers` DISABLE KEYS */;
+INSERT INTO `lecturers` VALUES (1,NULL,'2001/LT/0231','ALADESELU ISKILU',1,'2019-10-11 12:45:50','2019-10-11 12:45:50');
 /*!40000 ALTER TABLE `lecturers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -179,7 +183,7 @@ CREATE TABLE `levels` (
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
   UNIQUE KEY `level` (`level`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -188,6 +192,7 @@ CREATE TABLE `levels` (
 
 LOCK TABLES `levels` WRITE;
 /*!40000 ALTER TABLE `levels` DISABLE KEYS */;
+INSERT INTO `levels` VALUES (1,'100','2019-10-11 12:48:10','2019-10-11 12:48:10'),(2,'200','2019-10-11 12:48:16','2019-10-11 12:48:16'),(3,'300','2019-10-11 12:48:22','2019-10-11 12:48:22'),(4,'400','2019-10-11 12:48:29','2019-10-11 12:48:29'),(5,'500','2019-10-11 12:48:35','2019-10-11 12:48:35'),(6,'600','2019-10-11 12:48:41','2019-10-11 12:48:41');
 /*!40000 ALTER TABLE `levels` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -233,7 +238,7 @@ CREATE TABLE `registers` (
   KEY `course_id` (`course_id`),
   CONSTRAINT `registers_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   CONSTRAINT `registers_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -242,6 +247,7 @@ CREATE TABLE `registers` (
 
 LOCK TABLES `registers` WRITE;
 /*!40000 ALTER TABLE `registers` DISABLE KEYS */;
+INSERT INTO `registers` VALUES (1,1,1,'2019-10-11 12:55:54','2019-10-11 12:55:54'),(2,1,1,'2019-10-28 13:19:37','0000-00-00 00:00:00'),(3,1,1,'2019-10-28 13:19:38','0000-00-00 00:00:00'),(4,1,1,'2019-10-28 13:19:39','0000-00-00 00:00:00'),(5,1,1,'2019-10-28 13:19:40','0000-00-00 00:00:00'),(6,1,1,'2019-10-28 13:19:41','0000-00-00 00:00:00'),(7,1,2,'2019-10-28 13:19:45','0000-00-00 00:00:00'),(8,1,2,'2019-10-28 13:19:46','0000-00-00 00:00:00'),(9,1,2,'2019-10-28 13:19:47','0000-00-00 00:00:00'),(10,1,3,'2019-10-28 13:19:52','0000-00-00 00:00:00');
 /*!40000 ALTER TABLE `registers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -254,7 +260,7 @@ DROP TABLE IF EXISTS `sections`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `sections` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `section_name` varchar(25) NOT NULL,
+  `section` varchar(25) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
@@ -298,7 +304,7 @@ CREATE TABLE `students` (
   CONSTRAINT `students_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   CONSTRAINT `students_ibfk_2` FOREIGN KEY (`level_id`) REFERENCES `levels` (`id`),
   CONSTRAINT `students_ibfk_3` FOREIGN KEY (`department_id`) REFERENCES `departments` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -307,6 +313,7 @@ CREATE TABLE `students` (
 
 LOCK TABLES `students` WRITE;
 /*!40000 ALTER TABLE `students` DISABLE KEYS */;
+INSERT INTO `students` VALUES (1,1,'01/0930','Abayomi','Segun','Apetu',6,1,'2019-10-11 12:58:38','2019-10-11 12:58:38');
 /*!40000 ALTER TABLE `students` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -323,7 +330,7 @@ CREATE TABLE `user_types` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -332,7 +339,7 @@ CREATE TABLE `user_types` (
 
 LOCK TABLES `user_types` WRITE;
 /*!40000 ALTER TABLE `user_types` DISABLE KEYS */;
-INSERT INTO `user_types` VALUES (1,'student','2019-10-07 23:07:10','0000-00-00 00:00:00'),(2,'admin','2019-10-07 23:07:20','0000-00-00 00:00:00'),(3,'lecturer','2019-10-07 23:07:26','0000-00-00 00:00:00'),(4,'admin two','2019-10-10 01:07:00','2019-10-10 01:07:00'),(5,'admin two','2019-10-10 01:10:16','2019-10-10 01:10:16'),(6,'New Student','2019-10-10 06:30:50','2019-10-10 06:30:50');
+INSERT INTO `user_types` VALUES (1,'student','2019-10-07 23:07:10','0000-00-00 00:00:00'),(2,'admin','2019-10-07 23:07:20','0000-00-00 00:00:00'),(3,'lecturer','2019-10-07 23:07:26','0000-00-00 00:00:00'),(4,'admin two','2019-10-10 01:07:00','2019-10-10 01:07:00'),(5,'admin two','2019-10-10 01:10:16','2019-10-10 01:10:16'),(6,'New Student','2019-10-10 06:30:50','2019-10-10 06:30:50'),(7,'driver','2019-10-11 15:54:47','2019-10-11 15:54:47'),(8,'cleaner','2019-10-11 15:54:55','2019-10-11 15:54:55'),(9,'messenger','2019-10-11 15:55:08','2019-10-11 15:55:08'),(10,'office attendant','2019-10-11 15:55:22','2019-10-11 15:55:22'),(11,'cook','2019-10-11 15:55:31','2019-10-11 15:55:31'),(12,'cook','2019-10-11 16:02:03','2019-10-11 16:02:03');
 /*!40000 ALTER TABLE `user_types` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -364,7 +371,7 @@ CREATE TABLE `users` (
   UNIQUE KEY `phone` (`phone`),
   KEY `user_type_id` (`user_type_id`),
   CONSTRAINT `users_ibfk_1` FOREIGN KEY (`user_type_id`) REFERENCES `user_types` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -373,7 +380,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'abysmart',1,'abayomismart@gmail.com','2019-10-08 16:50:00','08185251347','$2y$10$fVS7P4DtFFPkdGiLu/wdouaI7DURYABHO.fBV8eJkALvXnUVBSQRW',NULL,'VSPAnHqQm0Bun92SeE5Bo89hnc4LMZvvV4nZXkQsN82EGUU9ZRZ7GS4IhRmK','x751IUpM3mnhnBahEquFIaoGGovVtAwSd3eMCrATNslV0mk1NXnBlr8XwpMz','1','on','2019-10-07 23:04:29','2019-10-10 04:05:43');
+INSERT INTO `users` VALUES (1,'abysmart',1,'abayomismart@gmail.com','2019-10-08 16:50:00','08185251347','$2y$10$fVS7P4DtFFPkdGiLu/wdouaI7DURYABHO.fBV8eJkALvXnUVBSQRW',NULL,'NFzY21em92f6IdlH5DK7jccEzNhTRGFGz5AJ3QiZR4CP9YfV1FxJ0RhsSj70','YaFocl9BjBAsd0uf2PLHzGP19Ouda3zn6gOGbWvWCTafVBv8M1nzrFaFdJeI','1','on','2019-10-07 23:04:29','2019-10-28 15:50:44'),(2,'abelman',NULL,'abelman@gmail.com',NULL,'08098786542','abel1234$',NULL,NULL,NULL,'0','on','2019-10-11 11:04:40','2019-10-11 11:04:40'),(4,'lucia',NULL,'lucia@gmail.com',NULL,'09076543211','lucia1234$',NULL,NULL,NULL,'0','on','2019-10-11 11:07:28','2019-10-11 11:07:28'),(5,'akande',1,'akandelaolu@gmail.com',NULL,'09087679900','akande1234$',NULL,NULL,NULL,'0','on','2019-10-11 11:13:01','2019-10-11 11:13:01'),(6,'emmateo',1,'adieleemma@gmail.com',NULL,'08145678900','$2y$10$kQpkv/cb1.JEcxksEwXVH.GDA0UOLKTY9EsKeByiMQeIzLbS/IB1K',NULL,NULL,NULL,'0','on','2019-10-11 13:28:34','2019-10-11 13:28:34'),(7,'abegide',1,'abegide@yahoo.com',NULL,'`2348045678901','$2y$10$TQrOYuy75Dzok2L60p3rlucn1HMMvJdWijJxhV60go5htm6cHJ9Me',NULL,NULL,NULL,'0','on','2019-10-12 22:09:50','2019-10-12 22:09:50'),(8,'adeyi',2,'adeyism@gmail.omc',NULL,'`2347045678900','$2y$10$an48FFGsyUCPUNsM2YCh1uhhVzy50KVCVR4GPVqkZEVaSMVtRhqCu',NULL,NULL,NULL,'0','on','2019-10-12 22:09:50','2019-10-12 22:09:50'),(9,'fulani',1,'danfulani@ymail.com',NULL,'`2349076889900','$2y$10$FTiIf3uoEg.F2xOeZirnLuqt7tkE.eGe3M7oUYevLdC8uPM7KDBRK',NULL,NULL,NULL,'0','on','2019-10-12 22:09:50','2019-10-12 22:09:50'),(10,'sileola',1,'silexwolex@fastmail.com',NULL,'`2348088789909','$2y$10$vecs2PqhCcxyfH8bY3acgeZ9KBuvoDDF1tCSTDI61D6CgoOOwvtdC',NULL,NULL,NULL,'0','on','2019-10-12 22:09:50','2019-10-12 22:09:50'),(11,'adede',3,'smartguy@rocketmail.com',NULL,'`2349088776541','$2y$10$j3UpC7CoK1FgfyNIhx9yqOCtU.dpYj4RHpX48Hu5LOXNly0DVCVyK',NULL,NULL,NULL,'0','on','2019-10-12 22:09:50','2019-10-12 22:09:50'),(12,'aher',1,'abayomi.apetu@gmail.com',NULL,'08185251341','$2y$10$8.VHaBWVFD55UfWdcCjuguG0C76sIlvji9GG9.lHhtRWSJqHdrsvG',NULL,NULL,NULL,'0','on','2019-10-19 07:40:01','2019-10-19 07:41:45');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -386,4 +393,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-10-10  9:17:01
+-- Dump completed on 2019-10-28 18:52:38
