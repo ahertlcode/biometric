@@ -83,7 +83,7 @@ class RegisterController extends Controller
         if($request->wantsJson()){
             return response()->json([
                 "info" => "E-mail verification code sent to $user->email",
-            ], 201);
+            ], 200);
         }else{
             return view('auth.register')->with('info', "E-mail verification code sent to $user->email");
         }
