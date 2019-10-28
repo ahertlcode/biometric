@@ -97,13 +97,13 @@ class UserController extends Controller
             ->get();
         }
 
-        if(!empty($extra)){
+        if(!is_null($extra)){
             $extra['department'] = $extra[0]->department();
             if(!is_null($extra['department']))$extra['faculty'] = $extra[0]->department()[0]->faculty();
             $user['details'] = $extra;
         }
 
-        if(!empty($attendance)){
+        if(!is_null($attendance)){
             $attnds = array();
             foreach($attendance as $attend)
             {
