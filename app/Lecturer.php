@@ -47,6 +47,6 @@ class Lecturer extends Model
      */
     public function course()
     {
-        return \App\Course::where('lecturer_id', $this->id)->get(['id','course']);
+        return \App\Course::where('lecturer_id', $this->id)->get(['course']);
     }
 }
