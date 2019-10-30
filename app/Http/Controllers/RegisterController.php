@@ -55,11 +55,15 @@ class RegisterController extends Controller
      */
     public function store(Request $request)
     {
-            Register::create($request->all());
-            if($request->wantsJson()){
-                return response()->json([
-                "info"=>"Register successfully created."
-            ], 201);
+        $user_id = \App\Student::where('matric_number', $request->matric_number)->get(['id']);
+        $course_id = \App\Course::where('course', $request->course_code)->get(['id']);
+        $request->request->add(['user_id' => $user_id]);
+        $request->request->add(['course_id' => $course_id]);
+        Register::create($request->all());
+        if($request->wantsJson()){
+            return response()->json([
+            "info"=>"Register successfully created."
+        ], 200);
         }else{
             $info = "Register successfully created";
             $registers = Register::all();
@@ -84,8 +88,8 @@ class RegisterController extends Controller
 
     public function edit(Register $register){
         $users = \App\User::all();
-    $courses = \App\Course::all();
-    return view('registers.edit',compact('users','courses'));
+        $courses = \App\Course::all();
+        return view('registers.edit',compact('users','courses'));
     }
 
     /**
@@ -99,12 +103,12 @@ class RegisterController extends Controller
     {
             $register->update($request->all());
             if($request->wantsJson()){
-            return response()->json(['info' => 'Register successfully updated.'], 200);
-        }else{
-            $info = "Register successfully updated.";
-            $registers = Register::all();
-            return view('registers.register',compact('info','registers'));
-        }
+                return response()->json(['info' => 'Register successfully updated.'], 200);
+            }else{
+                $info = "Register successfully updated.";
+                $registers = Register::all();
+                return view('registers.register',compact('info','registers'));
+            }
     }
 
     /**
