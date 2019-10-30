@@ -18,7 +18,7 @@ class Lecturer extends Model
      * Hidden columns not to be returned in query result.
      *
      */
-    protected $hidden = ['id','created_at','updated_at','status'];
+    protected $hidden = ['created_at','updated_at','status'];
 
     /**
      * Get the user for this model.
@@ -40,5 +40,13 @@ class Lecturer extends Model
         return $this->belongsTo('App\Department', 'department_id')->get();
     }
 
-
+    /**
+     * Get the course lectured by the lecturer
+     *
+     * @return App\Course
+     */
+    public function course()
+    {
+        return \App\Course::where('lecturer_id', $this->id)->get(['id','course']);
+    }
 }

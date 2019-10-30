@@ -43,7 +43,7 @@ class RegisterController extends Controller
 
     public function create(){
         $users = \App\User::all();
-    $courses = \App\Course::all();
+        $courses = \App\Course::all();
         return view('registers.create',compact('users','courses'));
     }
 

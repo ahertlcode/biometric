@@ -18,7 +18,7 @@ class Register extends Model
      * Hidden columns not to be returned in query result.
      *
      */
-    protected $hidden = ['id','created_at','updated_at','status'];
+    protected $hidden = ['id', 'created_at','updated_at','status'];
 
     /**
      * Get the user for this model.

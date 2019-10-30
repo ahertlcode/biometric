@@ -97,6 +97,10 @@ class UserController extends Controller
             ->get();
         }
 
+        if($user_type == "lecturer"){
+            $extra['courses'] = $extra[0]->course();
+        }
+
         if(!is_null($extra)){
             $extra['department'] = $extra[0]->department();
             if(!is_null($extra['department']))$extra['faculty'] = $extra[0]->department()[0]->faculty();

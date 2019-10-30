@@ -54,6 +54,11 @@ class LoginController extends Controller
             ($user) ? $user->online = 1 : '';
             $user->save();
             $user['user_type'] = $user->user_type()["user_type"];
+            if($user['user_type']=="lecturer"){
+                $lecturer = \App\Lecturer::where('user_id', $user->id)->first();
+                $user['details'] = $lecturer;
+                $user['courses'] = $lecturer->course();
+            }
             if($request->wantsJson()){
                 return response()->json([
                     'info' => "Login successful.",
