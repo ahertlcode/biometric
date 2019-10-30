@@ -55,8 +55,8 @@ class RegisterController extends Controller
      */
     public function store(Request $request)
     {
-        $user_id = \App\Student::where('matric_number', $request->matric_number)->get(['id']);
-        $course_id = \App\Course::where('course', $request->course_code)->get(['id']);
+        $user_id = \App\Student::where('matric_number', $request->matric_number)->first()->id;
+        $course_id = \App\Course::where('course', $request->course_code)->first()->id;
         $request->request->add(['user_id' => $user_id]);
         $request->request->add(['course_id' => $course_id]);
         Register::create($request->all());
