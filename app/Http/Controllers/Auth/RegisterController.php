@@ -84,11 +84,12 @@ class RegisterController extends Controller
             return response()->json([
                 "info" => "E-mail verification code sent to $user->email",
             ], 200);
-        }else{
+        }
+        /**else{
             $user_types = \App\UserType::all();
             $info = "E-mail verification code sent to $user->email";
             return view('auth.register', compact('info', 'user_types'));
-        }
+        }*/
     }
 
     public function verifymail(Request $request){
