@@ -79,13 +79,15 @@ class RegisterController extends Controller
     protected function registered(Request $request, User $user)
     {
         $user->rememberToken();
-        Mail::to($user->email)->send(new ConfirmationEmail($user));
         if($request->wantsJson()){
+            Mail::to($user->email)->send(new ConfirmationEmail($user));
             return response()->json([
                 "info" => "E-mail verification code sent to $user->email",
             ], 200);
         }else{
-            return view('auth.register')->with('info', "E-mail verification code sent to $user->email");
+            $user_types = \App\UserType::all();
+            $info = "E-mail verification code sent to $user->email";
+            return view('auth.register', compact('info', 'user_types'));
         }
     }
 
