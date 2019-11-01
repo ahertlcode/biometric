@@ -41,65 +41,74 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public function username(){
+    public function username()
+    {
         return 'phone';
     }
 
-    public function login(Request $request){
+    public function login(Request $request)
+    {
         //return json_decode($request);
         $this->validateLogin($request);
-        if($this->attemptLogin($request)){
+        if ($this->attemptLogin($request)) {
             $user = $this->guard()->user();
             $user->generateToken();
             ($user) ? $user->online = 1 : '';
             $user->save();
             $user['user_type'] = $user->user_type()["user_type"];
-            if($user['user_type']=="lecturer"){
+            if ($user['user_type']=="lecturer") {
                 $lecturer = \App\Lecturer::where('user_id', $user->id)->first();
                 $user['details'] = $lecturer;
                 $user['courses'] = $lecturer->course();
+            } elseif ($user['user_type']=="student") {
+                $student = \App\Student::where('user_id', $user->id)->first();
+                $user['details'] = $student;
+            } else {
+                $admin = \App\Admin::where('user_id', $user->id)->first();
+                $user['details'] = $admin;
             }
-            if($request->wantsJson()){
-                return response()->json([
-                    'info' => "Login successful.",
-                    'data' => $user
-                ], 200);
-            }else{
+            if ($request->wantsJson()) {
+                return response()->json(
+                    ['info' => "Login successful.",
+                    'data' => $user], 200
+                );
+            } else {
                 $info = "Login Successful.";
                 $data = $user;
-                return view('/home', compact('info','data'));
+                return view('/home', compact('info', 'data'));
             }
-        }else{
-            if($request->wantsJson()){
-                return response()->json([
-                    'info' => 'User validation failed.'
-                ], 422);
-            }else{
+        } else {
+            if ($request->wantsJson()) {
+                return response()->json(
+                    ['info' => 'User validation failed.'], 422
+                );
+            } else {
                 $info = 'User validation failed.';
                 return view('auth.login', compact('info'));
             }
         }
     }
 
-    public function logout(Request $request){
+    public function logout(Request $request)
+    {
         $user = Auth::guard('api')->user() ?? Auth::user();
-        if($user){
+        if ($user) {
             $user->api_token = null;
             $user->online = 0;
             $user->save();
             auth()->logout();
-            if($request->wantsJson()){
-                return response()->json([
-                    "info" => "You have logged out."
-                ], 200);
-            }else{
+            if ($request->wantsJson()) {
+                return response()->json(
+                    [ "info" => "You have logged out."], 200
+                );
+            } else {
                 $info = "You have logged out.";
                 return view('welcome', compact('info'));
             }
-        }else{
-            return response()->json([
-                "info" => "There is an error. Try again later."
-            ], 200);
+        } else {
+            return response()->json(
+                [ "info" => "There is an error. Try again later."], 200
+            );
         }
     }
 }
